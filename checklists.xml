@@ -304,7 +304,9 @@
               audio-prompt="cklist-audio/flt_comp_71.opus"
               auto-adv="none"/>
       </checklist>
-      <checklist name="QUICK TURN CHECKLIST" ttsname="Quick turn checklist">
+      <checklist name="QUICK TURN CHECKLIST" ttsname="Quick turn checklist"
+                 autoseqnext="2"
+                 ttscallcomplete="false" ttscallnext="false">
         <item name="TO BE USED FOR QUICK TURN WHEN APU HAS NOT BEEN"
               color="magenta"/>
         <item name="                   SHUT DOWN" color="magenta"/>
@@ -343,8 +345,11 @@
               ttsname="Emergency procedures" ttsaction="Reviewed"/>
         <item name="17. PINS/CHOCKS" action="REMOVED"
               ttsname="Pins, chocks" ttsaction="Removed"/>
+        <!-- BUG: TTS "complete" and pre-recorded "next" voicelines start playback at the same time.
+             Disable pre-recorded "next" voiceline (see above) and squash TTS equivalent into the "complete" voiceline. -->
         <item name="18. QUICK TURN CHECKLIST" action="COMPLETE"
-              ttsname="Quick turn checklist complete" ttsautocomplete="true"/>
+              ttsname="Quick turn checklist complete... Engine start checklist next" ttsautocomplete="true"
+              auto-adv="none"/>
       </checklist>
       <checklist name="ENGINE START CHECKLIST"
                  ttsname="Engine start checklist" autoseq="2"
