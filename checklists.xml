@@ -322,7 +322,7 @@
         <item name=" 5. TRIMS (3) MACH TRIM" action="SET"
               ttsname="Trims, mach trim" ttsaction="Set"/>
         <item name=" 6. ATIS &amp; CLEARANCE" action="COPIED"
-              ttsname="A-tis and clearance" ttsaction="Copies"/>
+              ttsname="A-tis and clearance" ttsaction="Copied"/>
         <item name=" 7. CPDLC" action="LOGON"
               ttsname="C.P.D.L.C" ttsaction="Logged on"/>
         <item name=" 8. FMS/PERF" action="PROGRAM/SET"
