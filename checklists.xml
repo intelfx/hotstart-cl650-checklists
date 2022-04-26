@@ -305,7 +305,7 @@
               auto-adv="none"/>
       </checklist>
       <checklist name="QUICK TURN CHECKLIST" ttsname="Quick turn checklist"
-                 ttscallcomplete="false" ttscallnext="false"
+                 ttscallcomplete="false" ttscallnext="true"
                  autoseqnext="2"
                  audio-start="cklist-audio/QTC.opus"
                  audio-complete="cklist-audio/QTCComp.opus">
@@ -384,7 +384,7 @@
         <item name="18. QUICK TURN CHECKLIST" action="COMPLETE"
               ttsname="Quick turn checklist complete" ttsautocomplete="true"
               audio-prompt="cklist-audio/QTCComp.opus"
-              audio-response="cklist-audio/eng_start_next.opus"/>
+              auto-adv="none"/>
       </checklist>
       <checklist name="ENGINE START CHECKLIST"
                  ttsname="Engine start checklist" autoseq="2"
