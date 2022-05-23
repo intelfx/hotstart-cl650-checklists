@@ -1314,7 +1314,7 @@
               ttsname="Pins and covers" ttsaction="Installed"
               audio-prompt="cklist-audio/securing_18.opus"
               audio-response="cklist-audio/securing_18_chk.opus"/>
-        <item name="18. SECURING CHECKLIST" action="COMPLETE"
+        <item name="19. SECURING CHECKLIST" action="COMPLETE"
               ttsname="Securing checklist complete" ttsautocomplete="true"
               audio-prompt="cklist-audio/securing_complete.opus"
               auto-adv="none"/>
