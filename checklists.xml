@@ -573,6 +573,9 @@
               audio-prompt="cklist-audio/after_start_16.opus"
               audio-response="cklist-audio/after_start_16_chk.opus"
               hint-image="cklist-images/after_start_16.png"/>
+        <!-- HACK wait for SGWAIS test OFF after confirming TEST OK -->
+        <item autocond="CL650/lamps/SGWAIS/test/on == 0" delay="2"
+              action="DO" ttsname="" visible="false"/>
         <item name="17. &gt;*&lt; COWL ANTI-ICE" action="OFF"
               ttsname="Cowl anti-ice" ttsaction="Off"
               autocond="CL650/fo_state/cai_off == 1" delay="2"
@@ -715,7 +718,7 @@
               audio-response="cklist-audio/before_takeoff_05_chk.opus"/>
         <item name=" 6. CONT IGNITION" action="ON"
               ttsname="Continuous ignition" ttsaction="On"
-              autocond="CL650/overhead/ign/cont > 0.5" delay="3"
+              autocond="CL650/lamps/overhead/ignition/cont == 1" delay="3"
               audio-prompt="cklist-audio/before_takeoff_06.opus"
               audio-response="cklist-audio/before_takeoff_06_chk.opus"
               auto-adv="capt"/>
@@ -739,7 +742,7 @@
               audio-response="cklist-audio/before_takeoff_09_chk.opus"/>
         <item name="10. LANDING/PULSE/RECOG LIGHTS" action="ON"
               ttsname="Landing, pulse, recog lights" ttsaction="On"
-              autocond="CL650/fo_state/ldg_lts_app == 1" delay="2.5"
+              autocond="CL650/fo_state/ldg_lts_app == 1" delay="3"
               audio-prompt="cklist-audio/before_takeoff_10.opus"
               audio-response="cklist-audio/before_takeoff_10_chk.opus"
               auto-adv="capt"/>
@@ -777,7 +780,7 @@
               auto-adv="fo"/>
         <item name=" 4. IGNITION" action="OFF"
               ttsname="Ignition" ttsaction="Off"
-              autocond="CL650/overhead/ign/cont == 0" delay="3"
+              autocond="CL650/lamps/overhead/ignition/cont == 0" delay="3"
               audio-prompt="cklist-audio/after_takeoff_04.opus"
               audio-response="cklist-audio/after_takeoff_04_chk.opus"
               auto-adv="capt"/>
@@ -1018,7 +1021,7 @@
               audio-response="cklist-audio/before_ldg_05_chk.opus"/>
         <item name=" 6. CONT IGNITION" action="ON"
               ttsname="Continuous ignition" ttsaction="On"
-              autocond="CL650/overhead/ign/cont > 0.5" delay="3"
+              autocond="CL650/lamps/overhead/ignition/cont == 1" delay="3"
               audio-prompt="cklist-audio/before_ldg_06.opus"
               audio-response="cklist-audio/before_ldg_06_chk.opus"
               auto-adv="capt"/>
@@ -1061,7 +1064,7 @@
               delay="2" visible="false"/>
         <item name=" 1. LANDING/PULSE/RECOG LIGHTS" action="OFF"
               ttsname="Landing, pulse, recog lights" ttsaction="Off"
-              autocond="CL650/fo_state/ldg_lts_off == 1" delay="2.5"
+              autocond="CL650/fo_state/ldg_lts_off == 1" delay="3"
               audio-prompt="cklist-audio/after_ldg_01.opus"
               audio-response="cklist-audio/after_ldg_01_chk.opus"
               auto-adv="capt"/>
@@ -1073,7 +1076,7 @@
               auto-adv="capt"/>
         <item name=" 3. CONT IGNITION" action="OFF"
               ttsname="Continuous ignition" ttsaction="Off"
-              autocond="CL650/overhead/ign/cont == 0" delay="3"
+              autocond="CL650/lamps/overhead/ignition/cont == 0" delay="3"
               audio-prompt="cklist-audio/after_ldg_03.opus"
               audio-response="cklist-audio/after_ldg_03_chk.opus"
               auto-adv="capt"/>
@@ -1218,6 +1221,7 @@
               audio-prompt="cklist-audio/eng_shutdown_13.opus"
               audio-response="cklist-audio/eng_shutdown_13_chk.opus"
               auto-adv="capt"/>
+        <!-- TODO better logic, check for both chocks and parking brakes -->
         <!-- HACK advance if parking brakes are off -->
         <item name="14. PARK BRAKE (IF CHOCKED)" action="OFF"
               ttsname="Parking brake, if chocked" ttsaction="Off"
