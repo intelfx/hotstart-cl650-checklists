@@ -41,35 +41,35 @@ if cl650_use_datarefs then
 	dataref("cl650_on_ground", "sim/flightmodel/failures/onground_all", "readonly")
 	dataref("cl650_tat", "sim/weather/temperature_le_c", "readonly")
 	dataref("cl650_sat", "sim/weather/temperature_ambient_c", "readonly")
-	dataref("cl650_wai", "CL650/overhead/ice/wing/mode_value", "readonly")
-	dataref("cl650_cai_L", "CL650/overhead/ice/cowl/L_value", "readonly")
-	dataref("cl650_cai_R", "CL650/overhead/ice/cowl/R_value", "readonly")
+	dataref("cl650_wai", "CL650/overhead/ice/wing/mode", "readonly")
+	dataref("cl650_cai_L", "CL650/overhead/ice/cowl/L", "readonly")
+	dataref("cl650_cai_R", "CL650/overhead/ice/cowl/R", "readonly")
 	define_shared_dataref2("cl650_anti_ice_cowl_ok", "CL650/fo_state/extra/cowl_anti_ice_ok", "Int")
 	define_shared_dataref2("cl650_anti_ice_cowl_ok_or_off", "CL650/fo_state/extra/cowl_anti_ice_land_ok_or_off", "Int")
 	define_shared_dataref2("cl650_anti_ice_wing_ok", "CL650/fo_state/extra/wing_anti_ice_ok", "Int")
 	define_shared_dataref2("cl650_anti_ice_all_ok", "CL650/fo_state/extra/all_anti_ice_ok", "Int")
 	define_shared_dataref2("cl650_anti_ice_off", "CL650/fo_state/extra/all_anti_ice_off", "Int")
 
-	dataref("cl650_apu_pwr_fuel", "CL650/overhead/apu/pwr_fuel_value", "readonly")
-	dataref("cl650_apu_start_stop", "CL650/overhead/apu/start_stop_value", "readonly")
+	dataref("cl650_apu_pwr_fuel", "CL650/overhead/apu/pwr_fuel", "readonly")
+	dataref("cl650_apu_start_stop", "CL650/overhead/apu/start_stop", "readonly")
 	dataref("cl650_apu_avail", "CL650/lamps/overhead/apu/start_stop/avail", "readonly")
 	dataref("cl650_apu_start", "CL650/lamps/overhead/apu/start_stop/start", "readonly")
 	define_shared_dataref2("cl650_apu_start_or_avail", "CL650/fo_state/extra/apu_start_or_avail", "Int")
 	define_shared_dataref2("cl650_apu_off", "CL650/fo_state/extra/apu_off", "Int")
 
-	dataref("cl650_probe_L", "CL650/overhead/ice/probe/L_value", "readonly")
-	dataref("cl650_probe_R", "CL650/overhead/ice/probe/R_value", "readonly")
+	dataref("cl650_probe_L", "CL650/overhead/ice/probe/L", "readonly")
+	dataref("cl650_probe_R", "CL650/overhead/ice/probe/R", "readonly")
 	define_shared_dataref2("cl650_probe_heat", "CL650/fo_state/extra/probe_heat", "Int")
 
-	dataref("cl650_wind_L", "CL650/overhead/ice/wind/L_value", "readonly")
-	dataref("cl650_wind_R", "CL650/overhead/ice/wind/R_value", "readonly")
+	dataref("cl650_wind_L", "CL650/overhead/ice/wind/L", "readonly")
+	dataref("cl650_wind_R", "CL650/overhead/ice/wind/R", "readonly")
 	define_shared_dataref2("cl650_windshield_heat", "CL650/fo_state/extra/windshield_heat", "Int")
 
-	dataref("cl650_thr_rev_L", "CL650/pedestal/thr_rev/arm_L_value", "readonly")
-	dataref("cl650_thr_rev_R", "CL650/pedestal/thr_rev/arm_R_value", "readonly")
+	dataref("cl650_thr_rev_L", "CL650/pedestal/thr_rev/arm_L", "readonly")
+	dataref("cl650_thr_rev_R", "CL650/pedestal/thr_rev/arm_R", "readonly")
 	define_shared_dataref2("cl650_thr_rev", "CL650/fo_state/extra/thr_rev", "Int")
 
-	dataref("cl650_sgwais_test", "CL650/SGWAIS/test_value", "readonly")
+	dataref("cl650_sgwais_test", "CL650/SGWAIS/test", "readonly")
 	dataref("cl650_sgwais_test_on", "CL650/lamps/SGWAIS/test/on", "readonly")
 	dataref("cl650_sgwais_fail_hi", "CL650/lamps/SGWAIS/temp/fail_hi", "readonly")
 	dataref("cl650_sgwais_fail_lo", "CL650/lamps/SGWAIS/temp/fail_lo", "readonly")
@@ -82,11 +82,10 @@ if cl650_use_datarefs then
 	define_shared_dataref2("cl650_apu_bleed", "CL650/fo_state/extra/apu_bleed", "Int")
 
 	-- CL650/overhead/signs/*: -1 == ON, 0 == OFF, 1 == AUTO
-	dataref("cl650_signs_no_smoking", "CL650/overhead/signs/no_smoking_value", "readonly")
-	dataref("cl650_signs_seatbelt", "CL650/overhead/signs/seatbelt_value", "readonly")
+	dataref("cl650_signs_no_smoking", "CL650/overhead/signs/no_smoking", "readonly")
+	dataref("cl650_signs_seatbelt", "CL650/overhead/signs/seatbelt", "readonly")
 	define_shared_dataref2("cl650_pax_signs", "CL650/fo_state/extra/pax_signs", "Int")
 
-	--define_shared_dataref2("cl650_", "CL650/fo_state/extra/", "Int")
 end
 --
 -- END state
