@@ -409,6 +409,7 @@
               audio-prompt="cklist-audio/eng_start_02.opus"
               audio-response="cklist-audio/eng_start_02_chk.opus"
               auto-adv="capt"/>
+        <!-- TODO add and use /extra/ dataref -->
         <item name=" 3. FUEL QTY &amp; BALANCE" action="CHECK"
               ttsname="Fuel quantity and balance" ttsaction="Checked"
               audio-prompt="cklist-audio/eng_start_03.opus"
@@ -541,6 +542,7 @@
               audio-response="cklist-audio/after_start_10_chk.opus"
               hint-image="cklist-images/after_start_10.png"
               auto-adv="capt"/>
+        <!-- TODO add and use an /extra/ dataref -->
         <item name="11. FUEL BALANCE" action="CHECK"
               ttsname="Fuel balance" ttsaction="Checked"
               audio-prompt="cklist-audio/after_start_11.opus"
@@ -634,6 +636,7 @@
               auto-adv="capt"/>
         <item name=" 2. WING &amp; COWL ANTI-ICE" action="NORM/ON OR OFF"
               ttsname="Wing and cowl anti-ice" ttsaction="Norm, on or off"
+              autocond="CL650/fo_state/extra/all_anti_ice_ok == 1" delay="3"
               audio-prompt="cklist-audio/taxi_02.opus"
               audio-response="cklist-audio/taxi_02_chk.opus"
               hint-image="cklist-images/taxi_02.png"/>
@@ -689,7 +692,7 @@
                  audio-complete="cklist-audio/before_takeoff_complete.opus">
         <item name=" 1. PASSENGER SIGNS" action="ADVISE/ON"
               ttsname="Passenger signs" ttsaction="Advised, on"
-              autocond="CL650/overhead/signs/seatbelt == -1" delay="3.5"
+              autocond="CL650/fo_state/extra/pax_signs == 1" delay="3.5"
               audio-prompt="cklist-audio/before_takeoff_01.opus"
               audio-response="cklist-audio/before_takeoff_01_chk.opus"
               auto-adv="capt"/>
@@ -701,19 +704,20 @@
               auto-adv="capt"/>
         <item name=" 3. PROBES" action="ON"
               ttsname="Probes" ttsaction="On"
-              autocond="CL650/overhead/ice/probe/L == 1" delay="3"
+              autocond="CL650/fo_state/extra/probe_heat == 1" delay="3"
               audio-prompt="cklist-audio/before_takeoff_03.opus"
               audio-response="cklist-audio/before_takeoff_03_chk.opus"
               auto-adv="capt"/>
         <item name=" 4. WINDSHIELD HEAT" action="ON"
               ttsname="Windshield heat" ttsaction="On"
-              autocond="CL650/overhead/ice/wind/L != 0" delay="3"
+              autocond="CL650/fo_state/extra/windshield_heat == 1" delay="3"
               audio-prompt="cklist-audio/before_takeoff_04.opus"
               audio-response="cklist-audio/before_takeoff_04_chk.opus"
               hint-image="cklist-images/before_takeoff_04.png"
               auto-adv="capt"/>
         <item name=" 5. WING &amp; COWL ANTI-ICE" action="NORM/ON OR OFF"
               ttsname="Wing and cowl anti-ice" ttsaction="Norm, on or off"
+              autocond="CL650/fo_state/extra/all_anti_ice_ok == 1" delay="3"
               audio-prompt="cklist-audio/before_takeoff_05.opus"
               audio-response="cklist-audio/before_takeoff_05_chk.opus"/>
         <item name=" 6. CONT IGNITION" action="ON"
@@ -731,7 +735,7 @@
         <item name=" 8. SUPP GND WING ANTI-ICE PANEL" action="CHECK"
               ttsname="Supplemental ground wing anti-ice panel"
               ttsaction="Checked"
-              autocond="CL650/SGWAIS/test == 0" delay="4.5"
+              autocond="CL650/fo_state/extra/SGWAIS_ok" delay="4.5"
               audio-prompt="cklist-audio/before_takeoff_08.opus"
               audio-response="cklist-audio/before_takeoff_08_chk.opus"
               hint-image="cklist-images/before_takeoff_08.png"
@@ -740,6 +744,11 @@
               ttsname="Kas takeoff config OK" ttsaction="Checked"
               audio-prompt="cklist-audio/before_takeoff_09.opus"
               audio-response="cklist-audio/before_takeoff_09_chk.opus"/>
+        <!-- TODO better logic?
+        CL650/fo_state/ldg_lts_app: 1 if L+R are PULSE or ON, does not check NOSE
+        sim/cockpit/electrical/landing_lights_on,
+        sim/cockpit2/switches/landing_lights_on: 1 if NOSE is ON, does not check L/R
+        -->
         <item name="10. LANDING/PULSE/RECOG LIGHTS" action="ON"
               ttsname="Landing, pulse, recog lights" ttsaction="On"
               autocond="CL650/fo_state/ldg_lts_app == 1" delay="3"
@@ -773,7 +782,7 @@
               auto-adv="capt"/>
         <item name=" 3. THRUST REVERSERS" action="OFF"
               ttsname="Thrust reversers" ttsaction="Off"
-              autocond="CL650/pedestal/thr_rev/arm_L == 0" delay="4"
+              autocond="CL650/fo_state/extra/thr_rev == 0" delay="4"
               audio-prompt="cklist-audio/after_takeoff_03.opus"
               audio-response="cklist-audio/after_takeoff_03_chk.opus"
               hint-image="cklist-images/after_takeoff_03.png"
@@ -794,7 +803,7 @@
               auto-adv="fo"/>
         <item name=" 6. PACKS TRANSITION" action="COMPLETE"
               ttsname="Packs transition" ttsaction="Completed"
-              autocond="CL650/fo_state/apu_bleed == 0" delay="10"
+              autocond="CL650/fo_state/extra/apu_bleed == 0" delay="10"
               audio-prompt="cklist-audio/after_takeoff_06.opus"
               audio-response="cklist-audio/after_takeoff_06_chk.opus"
               hint-image="cklist-images/after_takeoff_06.png"
@@ -814,7 +823,7 @@
               auto-adv="capt"/>
         <item name=" 9. APU" action="SHUTDOWN"
               ttsname="A.P.U." ttsaction="Shutdown"
-              autocond="CL650/lamps/overhead/apu/start_stop/avail == 0" delay="4"
+              autocond="CL650/fo_state/extra/apu_off == 1" delay="4"
               audio-prompt="cklist-audio/after_takeoff_09.opus"
               audio-response="cklist-audio/after_takeoff_09_chk.opus"
               auto-adv="capt"/>
@@ -850,7 +859,7 @@
               auto-adv="capt"/>
         <item name=" 3. THRUST REVERSERS" action="ARMED"
               ttsname="Thrust reversers" ttsaction="Armed"
-              autocond="CL650/pedestal/thr_rev/arm_L == 1" delay="4"
+              autocond="CL650/fo_state/extra/thr_rev == 1" delay="4"
               audio-prompt="cklist-audio/imm_ret_03.opus"
               audio-response="cklist-audio/imm_ret_03_chk.opus"
               auto-adv="capt"/>
@@ -927,7 +936,7 @@
                  audio-complete="cklist-audio/in_rng_complete.opus">
         <item name=" 1. APU" action="START"
               ttsname="A.P.U." ttsaction="Started"
-              autocond="CL650/lamps/overhead/apu/start_stop/avail == 1" delay="5"
+              autocond="CL650/fo_state/extra/apu_start_or_avail == 1" delay="5"
               audio-prompt="cklist-audio/in_rng_01.opus"
               audio-response="cklist-audio/in_rng_01_chk.opus"
               hint-image="cklist-images/in_rng_01.png"
@@ -960,7 +969,7 @@
               action="DO" ttsname="" visible="false"/>
         <item name=" 6. APU/PACKS TRANSITION" action="AVAIL/COMPLETE"
               ttsname="A.P.U. packs transition" ttsaction="Avail, completed"
-              autocond="CL650/fo_state/apu_bleed == 1" delay="10"
+              autocond="CL650/fo_state/extra/apu_bleed == 1" delay="10"
               audio-prompt="cklist-audio/in_rng_06.opus"
               audio-response="cklist-audio/in_rng_06_chk.opus"
               hint-image="cklist-images/in_rng_06.png"
@@ -1001,6 +1010,7 @@
               audio-prompt="cklist-audio/before_ldg_02.opus"
               audio-response="cklist-audio/before_ldg_02_chk.opus"
               auto-adv="capt"/>
+        <!-- TODO check both ARMED and TESTED -->
         <!-- HACK we only check if a/skid is armed -->
         <item name=" 3. ANTI-SKID" action="ARMED/TEST"
               ttsname="Anti-skid" ttsaction="Armed, tested"
@@ -1011,12 +1021,13 @@
               auto-adv="capt"/>
         <item name=" 4. PASSENGER SIGNS" action="ON"
               ttsname="Passenger signs" ttsaction="On"
-              autocond="CL650/overhead/signs/seatbelt == -1" delay="3.5"
+              autocond="CL650/fo_state/extra/pax_signs == 1" delay="3.5"
               audio-prompt="cklist-audio/before_ldg_04.opus"
               audio-response="cklist-audio/before_ldg_04_chk.opus"
               auto-adv="capt"/>
         <item name=" 5. WING/COWL ANTI-ICE" action="ON OR OFF"
               ttsname="Wing, cowl anti-ice" ttsaction="On or off"
+              autocond="CL650/fo_state/extra/all_anti_ice_ok == 1" delay="3"
               audio-prompt="cklist-audio/before_ldg_05.opus"
               audio-response="cklist-audio/before_ldg_05_chk.opus"/>
         <item name=" 6. CONT IGNITION" action="ON"
@@ -1027,7 +1038,7 @@
               auto-adv="capt"/>
         <item name=" 7. THRUST REVERSERS" action="ARMED"
               ttsname="Thrust reversers" ttsaction="Armed"
-              autocond="CL650/pedestal/thr_rev/arm_L == 1" delay="3.5"
+              autocond="CL650/fo_state/extra/thr_rev == 1" delay="3.5"
               audio-prompt="cklist-audio/before_ldg_07.opus"
               audio-response="cklist-audio/before_ldg_07_chk.opus"
               hint-image="cklist-images/before_ldg_07.png"
@@ -1048,6 +1059,7 @@
               ttsname="Kas" ttsaction="Checked"
               audio-prompt="cklist-audio/before_ldg_10.opus"
               audio-response="cklist-audio/before_ldg_10_chk.opus"/>
+        <!-- TODO somehow auto-advance to AFTER LANDING CHECKLIST once landed -->
         <item name="11. BEFORE LANDING CHECKLIST" action="COMPLETE"
               ttsname="Before landing checklist complete"
               ttsautocomplete="true"
@@ -1082,13 +1094,13 @@
               auto-adv="capt"/>
         <item name=" 4. WINDSHIELD HEAT" action="OFF"
               ttsname="Windshield heat" ttsaction="Off"
-              autocond="CL650/overhead/ice/wind/L == 0" delay="2.5"
+              autocond="CL650/fo_state/extra/windshield_heat == 0" delay="2.5"
               audio-prompt="cklist-audio/after_ldg_04.opus"
               audio-response="cklist-audio/after_ldg_04_chk.opus"
               auto-adv="capt"/>
         <item name=" 5. PROBES" action="OFF"
               ttsname="Probes" ttsaction="Off"
-              autocond="CL650/overhead/ice/probe/L == 0" delay="4"
+              autocond="CL650/fo_state/extra/probe_heat == 0" delay="4"
               audio-prompt="cklist-audio/after_ldg_05.opus"
               audio-response="cklist-audio/after_ldg_05_chk.opus"
               auto-adv="capt"/>
@@ -1098,10 +1110,10 @@
               audio-prompt="cklist-audio/after_ldg_06.opus"
               audio-response="cklist-audio/after_ldg_06_chk.opus"
               auto-adv="capt"/>
-        <!-- HACK advance if cowl anti-ice is off -->
+        <!-- HACK also accept if OFF until we have precise logic -->
         <item name=" 7. COWL ANTI-ICE" action="ON OR OFF"
               ttsname="Cowl anti-ice" ttsaction="On or off"
-              autocond="CL650/fo_state/cai_off == 1" delay="3"
+              autocond="CL650/fo_state/extra/cowl_anti_ice_ok_or_off == 1" delay="2"
               audio-prompt="cklist-audio/after_ldg_07.opus"
               audio-response="cklist-audio/after_ldg_07_chk.opus"/>
         <item name=" 8. SPOILERS" action="STOWED"
@@ -1154,7 +1166,7 @@
               auto-adv="capt"/>
         <item name=" 3. REVERSE THRUST" action="STOWED"
               ttsname="Reverse thrust" ttsaction="Stowed"
-              autocond="CL650/pedestal/throttle/reverse_L == 0" delay="2"
+              autocond="CL650/fo_state/extra/thr_rev == 0" delay="2"
               audio-prompt="cklist-audio/eng_shutdown_03.opus"
               audio-response="cklist-audio/eng_shutdown_03_chk.opus"
               auto-adv="capt"/>
@@ -1187,13 +1199,14 @@
               audio-prompt="cklist-audio/eng_shutdown_08.opus"
               auto-adv="capt"/>
         <item/>
+        <!-- TODO add and use /extra/ dataref -->
         <item name="  NOTE: CHECK ITT BELOW 350C" color="amber"
               ttsname="Check I.T.T. below 350 degrees celsius"
               audio-prompt="cklist-audio/eng_shutdown_check_itt.opus"/>
         <item/>
         <item name=" 9. ANTI-ICE" action="OFF"
               ttsname="Anti-ice" ttsaction="Off"
-              autocond="CL650/fo_state/cai_off == 1" delay="1.5"
+              autocond="CL650/fo_state/extra/all_anti_ice_off == 1" delay="1.5"
               audio-prompt="cklist-audio/eng_shutdown_09.opus"
               audio-response="cklist-audio/eng_shutdown_09_chk.opus"
               auto-adv="capt"/>
@@ -1230,7 +1243,7 @@
               audio-response="cklist-audio/eng_shutdown_14_chk.opus"/>
         <item name="15. PASSENGER SIGNS" action="OFF"
               ttsname="Passenger signs" ttsaction="Off"
-              autocond="CL650/overhead/signs/seatbelt == 0" delay="2.5"
+              autocond="CL650/fo_state/extra/pax_signs == 0" delay="2.5"
               audio-prompt="cklist-audio/eng_shutdown_15.opus"
               audio-response="cklist-audio/eng_shutdown_15_chk.opus"
               auto-adv="capt"/>
