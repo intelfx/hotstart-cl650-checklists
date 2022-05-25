@@ -827,6 +827,9 @@
               audio-prompt="cklist-audio/after_takeoff_09.opus"
               audio-response="cklist-audio/after_takeoff_09_chk.opus"
               auto-adv="capt"/>
+        <!-- HACK wait for APU PWR/FUEL OFF after confirming APU shutdown -->
+        <item autocond="CL650/overhead/apu/pwr_fuel == 0" delay="2"
+              action="DO" ttsname="" visible="false"/>
         <item name="10. PASSENGER SIGNS" action="ON/OFF OR AUTO"
               ttsname="Passenger signs" ttsaction="On, off or auto"
               audio-prompt="cklist-audio/after_takeoff_10.opus"
