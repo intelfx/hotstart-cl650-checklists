@@ -782,7 +782,7 @@
               auto-adv="capt"/>
         <item name=" 3. THRUST REVERSERS" action="OFF"
               ttsname="Thrust reversers" ttsaction="Off"
-              autocond="CL650/fo_state/extra/thr_rev == 0" delay="4"
+              autocond="CL650/fo_state/extra/thr_rev_arm == 0" delay="4"
               audio-prompt="cklist-audio/after_takeoff_03.opus"
               audio-response="cklist-audio/after_takeoff_03_chk.opus"
               hint-image="cklist-images/after_takeoff_03.png"
@@ -862,7 +862,7 @@
               auto-adv="capt"/>
         <item name=" 3. THRUST REVERSERS" action="ARMED"
               ttsname="Thrust reversers" ttsaction="Armed"
-              autocond="CL650/fo_state/extra/thr_rev == 1" delay="4"
+              autocond="CL650/fo_state/extra/thr_rev_arm == 1" delay="4"
               audio-prompt="cklist-audio/imm_ret_03.opus"
               audio-response="cklist-audio/imm_ret_03_chk.opus"
               auto-adv="capt"/>
@@ -1041,7 +1041,7 @@
               auto-adv="capt"/>
         <item name=" 7. THRUST REVERSERS" action="ARMED"
               ttsname="Thrust reversers" ttsaction="Armed"
-              autocond="CL650/fo_state/extra/thr_rev == 1" delay="3.5"
+              autocond="CL650/fo_state/extra/thr_rev_arm == 1" delay="3.5"
               audio-prompt="cklist-audio/before_ldg_07.opus"
               audio-response="cklist-audio/before_ldg_07_chk.opus"
               hint-image="cklist-images/before_ldg_07.png"

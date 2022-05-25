@@ -65,8 +65,12 @@ if cl650_use_datarefs then
 	dataref("cl650_wind_R", "CL650/overhead/ice/wind/R", "readonly")
 	define_shared_dataref2("cl650_windshield_heat", "CL650/fo_state/extra/windshield_heat", "Int")
 
-	dataref("cl650_thr_rev_L", "CL650/pedestal/thr_rev/arm_L", "readonly")
-	dataref("cl650_thr_rev_R", "CL650/pedestal/thr_rev/arm_R", "readonly")
+	dataref("cl650_thr_rev_arm_L", "CL650/pedestal/thr_rev/arm_L", "readonly")
+	dataref("cl650_thr_rev_arm_R", "CL650/pedestal/thr_rev/arm_R", "readonly")
+	define_shared_dataref2("cl650_thr_rev_arm", "CL650/fo_state/extra/thr_rev_arm", "Int")
+
+	dataref("cl650_thr_rev_L", "CL650/pedestal/throttle/reverse_L", "readonly")
+	dataref("cl650_thr_rev_R", "CL650/pedestal/throttle/reverse_R", "readonly")
 	define_shared_dataref2("cl650_thr_rev", "CL650/fo_state/extra/thr_rev", "Int")
 
 	dataref("cl650_sgwais_test", "CL650/SGWAIS/test", "readonly")
@@ -213,6 +217,9 @@ function cl650_datarefs_update()
 	cl650_windshield_heat = cl650_test(cl650_wind_L, cl650_wind_R)
 
 	-- CL650/fo_state/extra/thr_rev_arm == CL650/pedestal/thr_rev/arm_L && CL650/pedestal/thr_rev/arm_R
+	cl650_thr_rev_arm = cl650_test(cl650_thr_rev_arm_L, cl650_thr_rev_arm_R)
+
+	-- CL650/fo_state/extra/thr_rev == CL650/pedestal/throttle/reverse_L && CL650/pedestal/throttle/reverse_R
 	cl650_thr_rev = cl650_test(cl650_thr_rev_L, cl650_thr_rev_R)
 
 	-- CL650/fo_state/extra/apu_bleed
