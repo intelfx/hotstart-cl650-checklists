@@ -45,7 +45,7 @@ if cl650_use_datarefs then
 	dataref("cl650_cai_L", "CL650/overhead/ice/cowl/L", "readonly")
 	dataref("cl650_cai_R", "CL650/overhead/ice/cowl/R", "readonly")
 	define_shared_dataref2("cl650_anti_ice_cowl_ok", "CL650/fo_state/extra/cowl_anti_ice_ok", "Int")
-	define_shared_dataref2("cl650_anti_ice_cowl_ok_or_off", "CL650/fo_state/extra/cowl_anti_ice_land_ok_or_off", "Int")
+	define_shared_dataref2("cl650_anti_ice_cowl_ok_or_off", "CL650/fo_state/extra/cowl_anti_ice_ok_or_off", "Int")
 	define_shared_dataref2("cl650_anti_ice_wing_ok", "CL650/fo_state/extra/wing_anti_ice_ok", "Int")
 	define_shared_dataref2("cl650_anti_ice_all_ok", "CL650/fo_state/extra/all_anti_ice_ok", "Int")
 	define_shared_dataref2("cl650_anti_ice_off", "CL650/fo_state/extra/all_anti_ice_off", "Int")
