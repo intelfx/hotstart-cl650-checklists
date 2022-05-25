@@ -704,13 +704,13 @@
               auto-adv="capt"/>
         <item name=" 3. PROBES" action="ON"
               ttsname="Probes" ttsaction="On"
-              autocond="CL650/fo_state/extra/probe_heat == 1" delay="3"
+              autocond="CL650/fo_state/extra/probe_heat == 1" delay="2"
               audio-prompt="cklist-audio/before_takeoff_03.opus"
               audio-response="cklist-audio/before_takeoff_03_chk.opus"
               auto-adv="capt"/>
         <item name=" 4. WINDSHIELD HEAT" action="ON"
               ttsname="Windshield heat" ttsaction="On"
-              autocond="CL650/fo_state/extra/windshield_heat == 1" delay="3"
+              autocond="CL650/fo_state/extra/windshield_heat == 1" delay="2.5"
               audio-prompt="cklist-audio/before_takeoff_04.opus"
               audio-response="cklist-audio/before_takeoff_04_chk.opus"
               hint-image="cklist-images/before_takeoff_04.png"
@@ -1103,7 +1103,7 @@
               auto-adv="capt"/>
         <item name=" 5. PROBES" action="OFF"
               ttsname="Probes" ttsaction="Off"
-              autocond="CL650/fo_state/extra/probe_heat == 0" delay="4"
+              autocond="CL650/fo_state/extra/probe_heat == 0" delay="2"
               audio-prompt="cklist-audio/after_ldg_05.opus"
               audio-response="cklist-audio/after_ldg_05_chk.opus"
               auto-adv="capt"/>
@@ -1116,7 +1116,7 @@
         <!-- HACK also accept if OFF until we have precise logic -->
         <item name=" 7. COWL ANTI-ICE" action="ON OR OFF"
               ttsname="Cowl anti-ice" ttsaction="On or off"
-              autocond="CL650/fo_state/extra/cowl_anti_ice_ok_or_off == 1" delay="2"
+              autocond="CL650/fo_state/extra/cowl_anti_ice_ok_or_off == 1" delay="2.5"
               audio-prompt="cklist-audio/after_ldg_07.opus"
               audio-response="cklist-audio/after_ldg_07_chk.opus"/>
         <item name=" 8. SPOILERS" action="STOWED"
