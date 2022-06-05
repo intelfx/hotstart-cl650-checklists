@@ -634,9 +634,10 @@
               audio-prompt="cklist-audio/taxi_01.opus"
               audio-response="cklist-audio/taxi_01_chk.opus"
               auto-adv="capt"/>
+        <!-- HACK also accept if WING OFF, COWL ON until we have precise logic -->
         <item name=" 2. WING &amp; COWL ANTI-ICE" action="NORM/ON OR OFF"
               ttsname="Wing and cowl anti-ice" ttsaction="Norm, on or off"
-              autocond="CL650/fo_state/extra/all_anti_ice_ok == 1" delay="3"
+              autocond="CL650/fo_state/extra/all_anti_ice_ok_or_cowl_on == 1" delay="3"
               audio-prompt="cklist-audio/taxi_02.opus"
               audio-response="cklist-audio/taxi_02_chk.opus"
               hint-image="cklist-images/taxi_02.png"/>
@@ -715,9 +716,10 @@
               audio-response="cklist-audio/before_takeoff_04_chk.opus"
               hint-image="cklist-images/before_takeoff_04.png"
               auto-adv="capt"/>
+        <!-- HACK also accept if ON until we have precise logic -->
         <item name=" 5. WING &amp; COWL ANTI-ICE" action="NORM/ON OR OFF"
               ttsname="Wing and cowl anti-ice" ttsaction="Norm, on or off"
-              autocond="CL650/fo_state/extra/all_anti_ice_ok == 1" delay="3"
+              autocond="CL650/fo_state/extra/all_anti_ice_ok_or_on == 1" delay="3"
               audio-prompt="cklist-audio/before_takeoff_05.opus"
               audio-response="cklist-audio/before_takeoff_05_chk.opus"/>
         <item name=" 6. CONT IGNITION" action="ON"

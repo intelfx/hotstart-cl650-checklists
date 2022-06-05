@@ -46,6 +46,8 @@ if cl650_use_datarefs then
 	dataref("cl650_cai_R", "CL650/overhead/ice/cowl/R", "readonly")
 	define_shared_dataref2("cl650_anti_ice_cowl_ok", "CL650/fo_state/extra/cowl_anti_ice_ok", "Int")
 	define_shared_dataref2("cl650_anti_ice_cowl_ok_or_off", "CL650/fo_state/extra/cowl_anti_ice_ok_or_off", "Int")
+	define_shared_dataref2("cl650_anti_ice_all_ok_or_on", "CL650/fo_state/extra/all_anti_ice_ok_or_on", "Int")
+	define_shared_dataref2("cl650_anti_ice_all_ok_or_cowl_on", "CL650/fo_state/extra/all_anti_ice_ok_or_cowl_on", "Int")
 	define_shared_dataref2("cl650_anti_ice_wing_ok", "CL650/fo_state/extra/wing_anti_ice_ok", "Int")
 	define_shared_dataref2("cl650_anti_ice_all_ok", "CL650/fo_state/extra/all_anti_ice_ok", "Int")
 	define_shared_dataref2("cl650_anti_ice_off", "CL650/fo_state/extra/all_anti_ice_off", "Int")
@@ -208,6 +210,8 @@ function cl650_datarefs_update()
 	cl650_anti_ice_all_ok = (wai_ok and cai_ok) and 1 or 0
 
 	cl650_anti_ice_cowl_ok_or_off = (cai_ok or (cl650_cai_L == 0 and cl650_cai_R == 0)) and 1 or 0
+	cl650_anti_ice_all_ok_or_on = ((wai_ok or (cl650_wai == 1)) and (cai_ok or (cl650_cai_L == 1 and cl650_cai_R == 1))) and 1 or 0
+	cl650_anti_ice_all_ok_or_cowl_on = ((wai_ok or (cl650_wai == 0)) and (cai_ok or (cl650_cai_L == 1 and cl650_cai_R == 1))) and 1 or 0
 	cl650_anti_ice_off = (cl650_wai == 0 and cl650_cai_L == 0 and cl650_cai_R == 0) and 1 or 0
 
 	-- CL650/fo_state/extra/probe_heat == CL650/overhead/ice/probe/L && CL650/overhead/ice/probe/R
