@@ -532,6 +532,7 @@
         <item name=" 9. &gt;*&lt; COWL ANTI-ICE"
               action="GREEN ADVISORY MSG ON"
               ttsname="Cowl anti-ice" ttsaction="Green advisory message on"
+              autocond="CL650/fo_state/extra/cai_check == 1" delay="3"
               audio-prompt="cklist-audio/after_start_09.opus"
               audio-response="cklist-audio/after_start_09_chk.opus"
               hint-image="cklist-images/after_start_09.png"/>
