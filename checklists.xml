@@ -663,7 +663,7 @@
               auto-adv="fo"/>
         <item name=" 4. WINDSHIELD HEAT" action="ON"
               ttsname="Windshield heat" ttsaction="On"
-              autoaction="wind_heat_high" delay="3"
+              autoaction="wind_heat_low_or_hi" delay="3"
               audio-prompt="cklist-audio/before_takeoff_04.opus"
               audio-response="cklist-audio/before_takeoff_04_chk.opus"
               hint-image="cklist-images/before_takeoff_04.png"
