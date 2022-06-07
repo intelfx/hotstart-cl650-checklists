@@ -849,16 +849,14 @@
               auto-adv="none"/>
       </checklist>
       <!-- HACK: autoseq="7" is "IMMEDIATE RETURN CHECKLIST (2ND FLIGHT) - see below -->
-      <checklist name="IMMEDIATE RETURN CHECKLIST (1ST FLT OF THE DAY)" autoseq="8" autoseqnext="11"
+      <checklist name="IMMEDIATE RETURN CHECKLIST" autoseq="8" autoseqnext="11"
                  ttsname="Immediate return checklist" ttscallnext="true"
                  reset-on-goaround="true" select-on-goaround="true"
                  audio-start="cklist-audio/imm_ret.opus"
                  audio-complete="cklist-audio/imm_ret_complete.opus">
-        <item name="--------------------------------------------------" color="magenta"/>
         <item name="    TO BE USED ON THE FIRST FLIGHT OF THE DAY     " color="magenta"/>
-        <item name="SELECT PREVIOUS CHECKLIST FOR 2ND AND SUBSEQ FLTS " color="magenta"/>
-        <item name="--------------------------------------------------" color="magenta"
-              ttsname="" ttspause="true"/>
+        <item name=" SELECT PREVIOUS CHECKLIST FOR 2ND AND SUBSEQ FLTS" color="magenta"/>
+        <item ttsname="" ttspause="true" visible="false"/>
         <item/>
         <item name=" 1. PRESSURIZATION" action="SET"
               ttsname="Pressurization" ttsaction="Set"
@@ -1416,13 +1414,13 @@
               audio-prompt="cklist-audio/eng_start_07.opus"
               hint-image="cklist-images/eng_start_07.png"
               auto-adv="capt"/>
-        <item name=" 9. ENGINE 1" action="START"
+        <item name=" 8. ENGINE 1" action="START"
               ttsname="Engine 1 start" ttsautocomplete="true" ttspause="true"
               autocond="CL650/fo_state/engine/left/n2 &gt; 54" delay="3"
               audio-prompt="cklist-audio/eng_start_09.opus"
               hint-image="cklist-images/eng_start_09.png"
               auto-adv="capt"/>
-        <item name="10. ENGINE START CHECKLIST" action="COMPLETE"
+        <item name=" 9. ENGINE START CHECKLIST" action="COMPLETE"
               ttsname="Engine start checklist complete"
               ttsautocomplete="true"
               audio-prompt="cklist-audio/eng_start_complete.opus"
@@ -1460,51 +1458,51 @@
               audio-response="cklist-audio/after_start_04_chk.opus"
               hint-image="cklist-images/after_start_04.png"
               auto-adv="capt"/>
-        <item name=" 6. FLIGHT CONTROLS" action="CHECK"
+        <item name=" 5. FLIGHT CONTROLS" action="CHECK"
               ttsname="Flight controls" ttsaction="Checked"
               audio-prompt="cklist-audio/after_start_06.opus"
               audio-response="cklist-audio/after_start_06_chk.opus"
               hint-image="cklist-images/after_start_06.png"/>
         <!-- TODO add and use an /extra/ dataref -->
-        <item name="11. FUEL BALANCE" action="CHECK"
+        <item name=" 6. FUEL BALANCE" action="CHECK"
               ttsname="Fuel balance" ttsaction="Checked"
               audio-prompt="cklist-audio/after_start_11.opus"
               audio-response="cklist-audio/after_start_11_chk.opus"
               hint-image="cklist-images/after_start_11.png"/>
-        <item name="12. TRIMS" action="3 SET FOR T-O"
+        <item name=" 7. TRIMS" action="3 SET FOR T-O"
               ttsname="Trims" ttsaction="Three set for takeoff"
               audio-prompt="cklist-audio/after_start_12.opus"
               audio-response="cklist-audio/after_start_12_chk.opus"/>
-        <item name="13. NOSE STEER" action="ARMED"
+        <item name=" 8. NOSE STEER" action="ARMED"
               ttsname="Nose steer" ttsaction="Armed"
               autocond="CL650/pedestal/gear/nws == 1" delay="3"
               audio-prompt="cklist-audio/after_start_13.opus"
               audio-response="cklist-audio/after_start_13_chk.opus"
               auto-adv="capt"/>
-        <item name="14. APR" action="CHECK/ARM"
+        <item name=" 9. APR" action="CHECK/ARM"
               ttsname="A.P.R" ttsaction="Checked, armed"
               audio-prompt="cklist-audio/after_start_14.opus"
               audio-response="cklist-audio/after_start_14_chk.opus"
               hint-image="cklist-images/after_start_14.png"/>
-        <item name="15. ADG UNIT" action="TEST"
+        <item name="10. ADG UNIT" action="TEST"
               ttsname="ADG unit" ttsaction="Tested"
               audio-prompt="cklist-audio/after_start_15.opus"
               audio-response="cklist-audio/after_start_15_chk.opus"
               hint-image="cklist-images/after_start_15.png"/>
-        <item name="21. ATS" action="N1-TO"
+        <item name="11. ATS" action="N1-TO"
               ttsname="A.T.S" ttsaction="N1, takeoff"
               autocond="CL650/fo_state/ats_n1_to == 1" delay="3"
               audio-prompt="cklist-audio/after_start_21.opus"
               audio-response="cklist-audio/after_start_21_chk.opus"
               hint-image="cklist-images/after_start_21.png"
               auto-adv="capt"/>
-        <item name="22. ATC/TCAS" action="TA/RA"
+        <item name="12. ATC/TCAS" action="TA/RA"
               ttsname="A.T.C., tee kas" ttsaction="T-A, R-A"
               autocond="CL650/fo_state/xpdr_tara == 1" delay="4"
               audio-prompt="cklist-audio/after_start_22.opus"
               audio-response="cklist-audio/after_start_22_chk.opus"
               auto-adv="capt"/>
-        <item name="23. AFTER START CHECKLIST" action="COMPLETE"
+        <item name="13. AFTER START CHECKLIST" action="COMPLETE"
               ttsname="After start checklist complete" ttsautocomplete="true"
               audio-prompt="cklist-audio/after_start_complete.opus"
               auto-adv="none"/>
@@ -1540,28 +1538,28 @@
               ttspause="true"
               audio-prompt="cklist-audio/taxi_deice.opus"/>
         <item/>
-        <item name=" 5. FLAPS" action="20"
+        <item name=" 4. FLAPS" action="20"
               ttsname="Flaps" ttsaction="Twenty"
               autocond="CL650/fo_state/flaps_ind == 20" delay="1.5"
               audio-prompt="cklist-audio/taxi_05.opus"
               audio-response="cklist-audio/taxi_05_chk.opus"
               auto-adv="capt"/>
-        <item name=" 6. ALTIMETERS" action="SET/X-CHECK"
+        <item name=" 5. ALTIMETERS" action="SET/X-CHECK"
               ttsname="Altimeters" ttsaction="Set, cross-checked"
               autocond="CL650/fo_state/baro_3_set == 1" delay="3"
               audio-prompt="cklist-audio/taxi_06.opus"
               audio-response="cklist-audio/taxi_06_chk.opus"
               auto-adv="capt"/>
-        <item name=" 7. RADAR WX" action="ON"
+        <item name=" 6. RADAR WX" action="ON"
               ttsname="Radar weather" ttsaction="On" delay="4"
               audio-prompt="cklist-audio/taxi_07.opus"
               audio-response="cklist-audio/taxi_07_chk.opus"
               auto-adv="fo"/>
-        <item name=" 8. TAKEOFF BRIEFING" action="REVIEW"
+        <item name=" 7. TAKEOFF BRIEFING" action="REVIEW"
               ttsname="Takeoff briefing" ttsaction="Reviewed"
               audio-prompt="cklist-audio/taxi_08.opus"
               audio-response="cklist-audio/taxi_08_chk.opus"/>
-        <item name=" 9. TAXI CHECKLIST" action="COMPLETE"
+        <item name=" 8. TAXI CHECKLIST" action="COMPLETE"
               ttsname="Taxi checklist complete" ttsautocomplete="true"
               audio-prompt="cklist-audio/taxi_complete.opus"
               auto-adv="none"/>
