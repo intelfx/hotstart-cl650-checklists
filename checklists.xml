@@ -307,83 +307,83 @@
       <checklist name="QUICK TURN CHECKLIST" ttsname="Quick turn checklist"
                  autoseqnext="102"
                  ttscallcomplete="false" ttscallnext="true"
-                 audio-start="cklist-audio/QTC.opus"
-                 audio-complete="cklist-audio/QTCComp.opus">
+                 audio-start="cklist-audio/extra/QTC.opus"
+                 audio-complete="cklist-audio/extra/QTCComp.opus">
         <item name="TO BE USED FOR QUICK TURN WHEN APU HAS NOT BEEN"
               color="magenta"/>
         <item name="                   SHUT DOWN" color="magenta"/>
         <item/>
         <item name=" 1. PRESSURIZATION PANEL" action="SET"
               ttsname="Pressurization panel" ttsaction="Set"
-              audio-prompt="cklist-audio/QTPressPanel.opus"
-              audio-response="cklist-audio/QTSet.opus"/>
+              audio-prompt="cklist-audio/extra/QTPressPanel.opus"
+              audio-response="cklist-audio/extra/QTSet.opus"/>
         <item name=" 2. ANTI-ICE PANEL" action="CHECK/TEST"
               ttsname="Anti-ice panel" ttsaction="Checked, tested"
-              audio-prompt="cklist-audio/QTAntiIce.opus"
-              audio-response="cklist-audio/QTChkTst.opus"/>
+              audio-prompt="cklist-audio/extra/QTAntiIce.opus"
+              audio-response="cklist-audio/extra/QTChkTst.opus"/>
         <item name=" 3. FUEL PANEL" action="CHECK"
               ttsname="Fuel panel" ttsaction="Checked"
-              audio-prompt="cklist-audio/QTFuelPanel.opus"
-              audio-response="cklist-audio/QTChk.opus"/>
+              audio-prompt="cklist-audio/extra/QTFuelPanel.opus"
+              audio-response="cklist-audio/extra/QTChk.opus"/>
         <item name=" 4. CLOCK &amp; FMS FUEL USED" action="RESET"
               ttsname="Clock and FMS fuel used" ttsaction="Reset"
-              audio-prompt="cklist-audio/QTClockFMS.opus"
-              audio-response="cklist-audio/QTRst.opus"/>
+              audio-prompt="cklist-audio/extra/QTClockFMS.opus"
+              audio-response="cklist-audio/extra/QTRst.opus"/>
         <item name=" 5. TRIMS (3) MACH TRIM" action="SET"
               ttsname="Trims, mach trim" ttsaction="Set"
-              audio-prompt="cklist-audio/QTTrimsMach.opus"
-              audio-response="cklist-audio/QTSet.opus"/>
+              audio-prompt="cklist-audio/extra/QTTrimsMach.opus"
+              audio-response="cklist-audio/extra/QTSet.opus"/>
         <item name=" 6. ATIS &amp; CLEARANCE" action="COPIED"
               ttsname="A-tis and clearance" ttsaction="Copied"
-              audio-prompt="cklist-audio/QTATISClearance.opus"
-              audio-response="cklist-audio/QTCopied.opus"/>
+              audio-prompt="cklist-audio/extra/QTATISClearance.opus"
+              audio-response="cklist-audio/extra/QTCopied.opus"/>
         <item name=" 7. CPDLC" action="LOGON"
               ttsname="C.P.D.L.C" ttsaction="Logged on"
-              audio-prompt="cklist-audio/QTCPDLC.opus"
-              audio-response="cklist-audio/QTLoggedOn.opus"/>
+              audio-prompt="cklist-audio/extra/QTCPDLC.opus"
+              audio-response="cklist-audio/extra/QTLoggedOn.opus"/>
         <item name=" 8. FMS/PERF" action="PROGRAM/SET"
               ttsname="F.M.S., perf" ttsaction="Programmed, set"
-              audio-prompt="cklist-audio/QTFMSPerf.opus"
-              audio-response="cklist-audio/QTProgSet.opus"/>
+              audio-prompt="cklist-audio/extra/QTFMSPerf.opus"
+              audio-response="cklist-audio/extra/QTProgSet.opus"/>
         <item name=" 9. TAKEOFF DATA" action="SET"
               ttsname="Takeoff data" ttsaction="Set"
-              audio-prompt="cklist-audio/QTTakeoff.opus"
-              audio-response="cklist-audio/QTSet.opus"/>
+              audio-prompt="cklist-audio/extra/QTTakeoff.opus"
+              audio-response="cklist-audio/extra/QTSet.opus"/>
         <item name="10. AVIONICS/CHARTS" action="SET"
               ttsname="Avionics, charts" ttsaction="Set"
-              audio-prompt="cklist-audio/QTAvionicsCharts.opus"
-              audio-response="cklist-audio/QTSet.opus"/>
+              audio-prompt="cklist-audio/extra/QTAvionicsCharts.opus"
+              audio-response="cklist-audio/extra/QTSet.opus"/>
         <item name="11. FLT INSTRUMENTS" action="CHECKED/SET"
               ttsname="Flight instruments" ttsaction="Checked, set"
-              audio-prompt="cklist-audio/QTFLTInst.opus"
-              audio-response="cklist-audio/QTChkSet.opus"/>
+              audio-prompt="cklist-audio/extra/QTFLTInst.opus"
+              audio-response="cklist-audio/extra/QTChkSet.opus"/>
         <item name="12. ANTI-SKID" action="ARMED/CHECK"
               ttsname="Anti-skid" ttsaction="Armed, checked"
-              audio-prompt="cklist-audio/QTAntiSkid.opus"
-              audio-response="cklist-audio/QTArmChk.opus"/>
+              audio-prompt="cklist-audio/extra/QTAntiSkid.opus"
+              audio-response="cklist-audio/extra/QTArmChk.opus"/>
         <item name="13. PARKING BRAKE" action="SET"
               ttsname="Parking brake" ttsaction="Set"
-              audio-prompt="cklist-audio/QTParkingBrake.opus"
-              audio-response="cklist-audio/QTSet.opus"/>
+              audio-prompt="cklist-audio/extra/QTParkingBrake.opus"
+              audio-response="cklist-audio/extra/QTSet.opus"/>
         <item name="14. PASSENGER SIGNS" action="ON/AUTO"
               ttsname="Passenger signs" ttsaction="On, auto"
-              audio-prompt="cklist-audio/QTPaxSigns.opus"
-              audio-response="cklist-audio/QTOnAuto.opus"/>
+              audio-prompt="cklist-audio/extra/QTPaxSigns.opus"
+              audio-response="cklist-audio/extra/QTOnAuto.opus"/>
         <item name="15. DEPARTURE BRIEFING" action="COMPLETE"
               ttsname="Departure briefing" ttsaction="Complete"
-              audio-prompt="cklist-audio/QTDepBrief.opus"
-              audio-response="cklist-audio/QTComplete.opus"/>
+              audio-prompt="cklist-audio/extra/QTDepBrief.opus"
+              audio-response="cklist-audio/extra/QTComplete.opus"/>
         <item name="16. EMERGENCY PROCEDURES" action="REVIEW"
               ttsname="Emergency procedures" ttsaction="Reviewed"
-              audio-prompt="cklist-audio/QTEmerProc.opus"
-              audio-response="cklist-audio/QTRev.opus"/>
+              audio-prompt="cklist-audio/extra/QTEmerProc.opus"
+              audio-response="cklist-audio/extra/QTRev.opus"/>
         <item name="17. PINS/CHOCKS" action="REMOVED"
               ttsname="Pins, chocks" ttsaction="Removed"
-              audio-prompt="cklist-audio/QTPinsChocks.opus"
-              audio-response="cklist-audio/QTRemoved.opus"/>
+              audio-prompt="cklist-audio/extra/QTPinsChocks.opus"
+              audio-response="cklist-audio/extra/QTRemoved.opus"/>
         <item name="18. QUICK TURN CHECKLIST" action="COMPLETE"
               ttsname="Quick turn checklist complete" ttsautocomplete="true"
-              audio-prompt="cklist-audio/QTCComp.opus"
+              audio-prompt="cklist-audio/extra/QTCComp.opus"
               auto-adv="none"/>
       </checklist>
       <checklist name="ENGINE START CHECKLIST"
