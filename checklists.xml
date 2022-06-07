@@ -830,6 +830,21 @@
               audio-prompt="cklist-audio/after_takeoff_09.opus"
               audio-response="cklist-audio/after_takeoff_09_chk.opus"
               auto-adv="capt"/>
+        <!--
+        <item/>
+        <item name="       CHECK RPM BELOW 50% & EGT BELOW 350C         " color="amber"/>
+        <item name="           THEN SELECT APU PWR/FUEL OFF             " color="amber"/>
+        <item/>
+        -->
+        <!--
+        <item/>
+        <item name=" CHECK RPM BELOW 50%, THEN SELECT APU PWR/FUEL OFF" color="amber"/>
+        <item/>
+        -->
+        <item/>
+        <item name="  NOTE: CHECK RPM BELOW 50% &amp; EGT BELOW 350C" color="amber"/>
+        <item name="        THEN SELECT APU PWR/FUEL OFF" color="amber"/>
+        <item/>
         <!-- HACK wait for APU PWR/FUEL OFF after confirming APU shutdown -->
         <item autocond="CL650/overhead/apu/pwr_fuel == 0" delay="2"
               action="DO" ttsname="" visible="false"/>
@@ -1708,6 +1723,10 @@
               audio-prompt="cklist-audio/after_takeoff_09.opus"
               audio-response="cklist-audio/after_takeoff_09_chk.opus"
               auto-adv="capt"/>
+        <item/>
+        <item name="  NOTE: CHECK RPM BELOW 50% &amp; EGT BELOW 350C" color="amber"/>
+        <item name="        THEN SELECT APU PWR/FUEL OFF" color="amber"/>
+        <item/>
         <!-- HACK wait for APU PWR/FUEL OFF after confirming APU shutdown -->
         <item autocond="CL650/overhead/apu/pwr_fuel == 0" delay="2"
               action="DO" ttsname="" visible="false"/>
