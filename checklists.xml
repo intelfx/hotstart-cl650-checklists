@@ -4,8 +4,47 @@
   <version>REVISION 2021-12-29</version>
   <groups>
     <group name="NORMAL CHECKLIST" type="normal">
+      <!-- The goal of this trampoline checklist is twofold.
+           First, it needs to _exist_, for us to be able to use its autoseqnext= as a trampoline
+           to give the first usable checklist an autoseq= id greater than 1.
+
+           Second, it must be possible to click through it with as little user actions as possible.
+           It is not possible to activate next checklist automatically, so we are limited to 1 extra
+           click or more.
+
+           Third, if we have to have the user make an extra click, we'd like to use this opportunity
+           to show a message to the user, so it must be visible.
+           To make the trampoline checklist visible, it needs to have at least one checkable item.
+      -->
+      <!--
+        Normal length of a checklist line (1L, 2R padding)
+        <item name=" =================================================  " color="magenta"/>
+        Full length (0 padding, doesn't fit into the box on the right)
+        <item name="====================================================" color="magenta"/>
+      -->
+      <checklist name="TITLE PAGE"
+                 ttsname="" ttscallcomplete="false" ttscallnext="false"
+                 audio-start="cklist-audio/extra/_empty.opus"
+                 audio-complete="cklist-audio/extra/_empty.opus"
+                 autoseq="1" autoseqnext="4">
+        <item name="           GO TO NEXT CHECKLIST TO START          " color="magenta"/>
+        <item name="                        OR                        " color="magenta"/>
+        <item name="      SELECT PREVIOUS CHECKLIST FOR QUICK TURN    " color="magenta"/>
+        <item name="                        OR                        " color="magenta"/>
+        <item name="SELECT NEXT, THEN PREVIOUS CHECKLIST FOR RAPID START" color="magenta"/>
+        <item/>
+        <!-- item needs to have a ttsname= to be considered for checking, otherwise cursor will skip over it -->
+        <!-- use autocond= with a known true condition to auto-check the item -->
+        <!-- for autocond= to work, delay= cannot be 0 or absent, so use almost 0 -->
+        <item action="DO" ttsname="" visible="false"
+              autocond="1" delay="0.001"
+              audio-prompt="cklist-audio/extra/_empty.opus"
+              audio-response="cklist-audio/extra/_empty.opus"
+              auto-adv="none"/>
+      </checklist>
+
       <checklist name="FLIGHT COMPARTMENT CHECKLIST"
-                 ttsname="Flight compartment checklist" autoseq="1"
+                 ttsname="Flight compartment checklist" autoseq="4"
                  ttscallcomplete="false" ttscallnext="true"
                  audio-start="cklist-audio/flt_comp.opus"
                  audio-complete="cklist-audio/flt_comp_complete.opus">
@@ -305,7 +344,7 @@
               auto-adv="none"/>
       </checklist>
       <checklist name="QUICK TURN CHECKLIST" ttsname="Quick turn checklist"
-                 autoseqnext="102"
+                 autoseq="0" autoseqnext="105"
                  ttscallcomplete="false" ttscallnext="true"
                  audio-start="cklist-audio/extra/QTC.opus"
                  audio-complete="cklist-audio/extra/QTCComp.opus">
@@ -387,7 +426,7 @@
               auto-adv="none"/>
       </checklist>
       <checklist name="ENGINE START CHECKLIST"
-                 ttsname="Engine start checklist" autoseq="2"
+                 ttsname="Engine start checklist" autoseq="5"
                  ttscallcomplete="false" ttscallnext="true"
                  audio-start="cklist-audio/eng_start.opus"
                  audio-next="cklist-audio/eng_start_next.opus"
@@ -476,7 +515,7 @@
               color="amber"/>
       </checklist>
       <checklist name="AFTER START CHECKLIST"
-                 ttsname="After start checklist" autoseq="3"
+                 ttsname="After start checklist" autoseq="6"
                  ttscallcomplete="false" ttscallnext="true"
                  audio-start="cklist-audio/after_start.opus"
                  audio-next="cklist-audio/after_start_next.opus"
@@ -624,7 +663,7 @@
               auto-adv="none"/>
       </checklist>
       <checklist name="TAXI CHECKLIST"
-                 ttsname="Taxi checklist" autoseq="4"
+                 ttsname="Taxi checklist" autoseq="7"
                  ttscallcomplete="false" ttscallnext="true"
                  audio-start="cklist-audio/taxi.opus"
                  audio-next="cklist-audio/taxi_next.opus"
@@ -687,7 +726,7 @@
               auto-adv="none"/>
       </checklist>
       <checklist name="BEFORE TAKEOFF CHECKLIST"
-                 ttsname="Before takeoff checklist" autoseq="5"
+                 ttsname="Before takeoff checklist" autoseq="8"
                  ttscallcomplete="false" ttscallnext="true"
                  audio-start="cklist-audio/before_takeoff.opus"
                  audio-next="cklist-audio/before_takeoff_next.opus"
@@ -765,7 +804,7 @@
               auto-adv="none"/>
       </checklist>
       <checklist name="AFTER TAKEOFF CHECKLIST"
-                 ttsname="After takeoff checklist" autoseq="6" autoseqnext="9"
+                 ttsname="After takeoff checklist" autoseq="9" autoseqnext="12"
                  ttscallcomplete="false"
                  reset-on-goaround="true"
                  audio-start="cklist-audio/after_takeoff.opus"
@@ -863,8 +902,8 @@
               audio-prompt="cklist-audio/after_takeoff_complete.opus"
               auto-adv="none"/>
       </checklist>
-      <!-- HACK: autoseq="7" is "IMMEDIATE RETURN CHECKLIST (2ND FLIGHT) - see below -->
-      <checklist name="IMMEDIATE RETURN CHECKLIST" autoseq="8" autoseqnext="11"
+      <!-- HACK: autoseq="10" is "IMMEDIATE RETURN CHECKLIST (2ND FLIGHT) - see below -->
+      <checklist name="IMMEDIATE RETURN CHECKLIST" autoseq="11" autoseqnext="14"
                  ttsname="Immediate return checklist" ttscallnext="true"
                  reset-on-goaround="true" select-on-goaround="true"
                  audio-start="cklist-audio/imm_ret.opus"
@@ -909,7 +948,7 @@
               auto-adv="none"/>
       </checklist>
       <checklist name="DESCENT CHECKLIST"
-                 ttsname="Descent checklist" autoseq="9"
+                 ttsname="Descent checklist" autoseq="12"
                  ttscallcomplete="false" ttscallnext="true"
                  reset-on-goaround="true"
                  audio-start="cklist-audio/des.opus"
@@ -954,7 +993,7 @@
               auto-adv="none"/>
       </checklist>
       <checklist name="IN RANGE CHECKLIST"
-                 ttsname="In range checklist" autoseq="10"
+                 ttsname="In range checklist" autoseq="13"
                  ttscallcomplete="false" ttscallnext="true"
                  reset-on-goaround="true"
                  audio-start="cklist-audio/in_rng.opus"
@@ -1017,7 +1056,7 @@
               auto-adv="none"/>
       </checklist>
       <checklist name="BEFORE LANDING CHECKLIST"
-                 ttsname="Before landing checklist" autoseq="11"
+                 ttsname="Before landing checklist" autoseq="14"
                  ttscallcomplete="false" ttscallnext="true"
                  reset-on-goaround="true"
                  audio-start="cklist-audio/before_ldg.opus"
@@ -1093,7 +1132,7 @@
               auto-adv="none"/>
       </checklist>
       <checklist name="AFTER LANDING CHECKLIST"
-                 ttsname="After landing checklist" autoseq="12"
+                 ttsname="After landing checklist" autoseq="15"
                  ttscallcomplete="false" ttscallnext="true"
                  audio-start="cklist-audio/after_ldg.opus"
                  audio-next="cklist-audio/after_ldg_next.opus"
@@ -1173,7 +1212,7 @@
               auto-adv="none"/>
       </checklist>
       <checklist name="ENGINE SHUTDOWN CHECKLIST"
-                 ttsname="Engine shutdown checklist" autoseq="13"
+                 ttsname="Engine shutdown checklist" autoseq="16"
                  ttscallcomplete="false" ttscallnext="true"
                  audio-start="cklist-audio/eng_shutdown.opus"
                  audio-next="cklist-audio/eng_shutdown_next.opus"
@@ -1286,7 +1325,7 @@
               auto-adv="none"/>
       </checklist>
       <checklist name="SECURING CHECKLIST"
-                 ttsname="Securing checklist" autoseq="14"
+                 ttsname="Securing checklist" autoseq="17"
                  ttscallcomplete="false"
                  audio-start="cklist-audio/securing.opus"
                  audio-next="cklist-audio/securing_next.opus"
@@ -1372,7 +1411,7 @@
       <!-- DUPLICATES OF CHECKLISTS FOR SECOND AND SUBSEQUENT FLIGHTS OF THE DAY -->
 
       <checklist name="ENGINE START CHECKLIST (2ND FLIGHT)"
-                 ttsname="Engine start checklist" autoseq="102"
+                 ttsname="Engine start checklist" autoseq="105"
                  ttscallcomplete="false" ttscallnext="true"
                  audio-start="cklist-audio/eng_start.opus"
                  audio-next="cklist-audio/eng_start_next.opus"
@@ -1442,7 +1481,7 @@
               auto-adv="none"/>
       </checklist>
       <checklist name="AFTER START CHECKLIST (2ND FLIGHT)"
-                 ttsname="After start checklist" autoseq="103"
+                 ttsname="After start checklist" autoseq="106"
                  ttscallcomplete="false" ttscallnext="true"
                  audio-start="cklist-audio/after_start.opus"
                  audio-next="cklist-audio/after_start_next.opus"
@@ -1523,7 +1562,7 @@
               auto-adv="none"/>
       </checklist>
       <checklist name="TAXI CHECKLIST (2ND FLIGHT)"
-                 ttsname="Taxi checklist" autoseq="104"
+                 ttsname="Taxi checklist" autoseq="107"
                  ttscallcomplete="false" ttscallnext="true"
                  audio-start="cklist-audio/taxi.opus"
                  audio-next="cklist-audio/taxi_next.opus"
@@ -1580,7 +1619,7 @@
               auto-adv="none"/>
       </checklist>
       <checklist name="BEFORE TAKEOFF CHECKLIST (2ND FLIGHT)"
-                 ttsname="Before takeoff checklist" autoseq="105"
+                 ttsname="Before takeoff checklist" autoseq="108"
                  ttscallcomplete="false" ttscallnext="true"
                  audio-start="cklist-audio/before_takeoff.opus"
                  audio-next="cklist-audio/before_takeoff_next.opus"
@@ -1658,7 +1697,7 @@
               auto-adv="none"/>
       </checklist>
       <checklist name="AFTER TAKEOFF CHECKLIST (2ND FLIGHT)"
-                 ttsname="After takeoff checklist" autoseq="106" autoseqnext="109"
+                 ttsname="After takeoff checklist" autoseq="109" autoseqnext="112"
                  ttscallcomplete="false"
                  reset-on-goaround="true"
                  audio-start="cklist-audio/after_takeoff.opus"
@@ -1745,7 +1784,7 @@
               audio-prompt="cklist-audio/after_takeoff_complete.opus"
               auto-adv="none"/>
       </checklist>
-      <checklist name="IMMEDIATE RETURN CHECKLIST (2ND FLIGHT)" autoseq="7" autoseqnext="111"
+      <checklist name="IMMEDIATE RETURN CHECKLIST (2ND FLIGHT)" autoseq="10" autoseqnext="114"
                  ttsname="Immediate return checklist" ttscallnext="true"
                  reset-on-goaround="true" select-on-goaround="true"
                  audio-start="cklist-audio/imm_ret.opus"
@@ -1786,7 +1825,7 @@
               auto-adv="none"/>
       </checklist>
       <checklist name="DESCENT CHECKLIST (2ND FLIGHT)"
-                 ttsname="Descent checklist" autoseq="109"
+                 ttsname="Descent checklist" autoseq="112"
                  ttscallcomplete="false" ttscallnext="true"
                  reset-on-goaround="true"
                  audio-start="cklist-audio/des.opus"
@@ -1831,7 +1870,7 @@
               auto-adv="none"/>
       </checklist>
       <checklist name="IN RANGE CHECKLIST (2ND FLIGHT)"
-                 ttsname="In range checklist" autoseq="110"
+                 ttsname="In range checklist" autoseq="113"
                  ttscallcomplete="false" ttscallnext="true"
                  reset-on-goaround="true"
                  audio-start="cklist-audio/in_rng.opus"
@@ -1894,7 +1933,7 @@
               auto-adv="none"/>
       </checklist>
       <checklist name="BEFORE LANDING CHECKLIST (2ND FLIGHT)"
-                 ttsname="Before landing checklist" autoseq="111"
+                 ttsname="Before landing checklist" autoseq="114"
                  ttscallcomplete="false" ttscallnext="true"
                  reset-on-goaround="true"
                  audio-start="cklist-audio/before_ldg.opus"
@@ -1970,7 +2009,7 @@
               auto-adv="none"/>
       </checklist>
       <checklist name="AFTER LANDING CHECKLIST (2ND FLIGHT)"
-                 ttsname="After landing checklist" autoseq="112"
+                 ttsname="After landing checklist" autoseq="115"
                  ttscallcomplete="false" ttscallnext="true"
                  audio-start="cklist-audio/after_ldg.opus"
                  audio-next="cklist-audio/after_ldg_next.opus"
@@ -2050,7 +2089,7 @@
               auto-adv="none"/>
       </checklist>
       <checklist name="ENGINE SHUTDOWN CHECKLIST (2ND FLIGHT)"
-                 ttsname="Engine shutdown checklist" autoseq="113" autoseqnext="14"
+                 ttsname="Engine shutdown checklist" autoseq="116" autoseqnext="17"
                  ttscallcomplete="false" ttscallnext="true"
                  audio-start="cklist-audio/eng_shutdown.opus"
                  audio-next="cklist-audio/eng_shutdown_next.opus"
@@ -2090,7 +2129,7 @@
               audio-prompt="cklist-audio/eng_shutdown_06.opus"
               audio-response="cklist-audio/eng_shutdown_06_chk.opus"
               auto-adv="capt"/>
-        <item name=" 8. ENGINE 1" action="SHUTDOWN"
+        <item name=" 7. ENGINE 1" action="SHUTDOWN"
               ttsname="Engine 1 shutdown"
               autocond="CL650/fo_state/engine/left/n2 &lt; 50" delay="3"
               audio-prompt="cklist-audio/eng_shutdown_08.opus"
@@ -2101,31 +2140,31 @@
               ttsname="Check I.T.T. below 350 degrees celsius"
               audio-prompt="cklist-audio/eng_shutdown_check_itt.opus"/>
         <item/>
-        <item name=" 9. ANTI-ICE" action="OFF"
+        <item name=" 8. ANTI-ICE" action="OFF"
               ttsname="Anti-ice" ttsaction="Off"
               autocond="CL650/fo_state/extra/all_anti_ice_off == 1" delay="1.5"
               audio-prompt="cklist-audio/eng_shutdown_09.opus"
               audio-response="cklist-audio/eng_shutdown_09_chk.opus"
               auto-adv="capt"/>
-        <item name="10. 14TH STAGE" action="OFF"
+        <item name=" 9. 14TH STAGE" action="OFF"
               ttsname="Fourteenth stage" ttsaction="Off"
               autocond="CL650/fo_state/bleed_14st_off == 1" delay="2"
               audio-prompt="cklist-audio/eng_shutdown_10.opus"
               audio-response="cklist-audio/eng_shutdown_10_chk.opus"
               auto-adv="capt"/>
-        <item name="11. BEACON" action="OFF"
+        <item name="10. BEACON" action="OFF"
               ttsname="Beacon" ttsaction="Off"
               autocond="CL650/overhead/ext_lts/beacon == 0" delay="2"
               audio-prompt="cklist-audio/eng_shutdown_11.opus"
               audio-response="cklist-audio/eng_shutdown_11_chk.opus"
               auto-adv="capt"/>
-        <item name="12. NOSE STEER" action="OFF"
+        <item name="11. NOSE STEER" action="OFF"
               ttsname="Nose steer" ttsaction="Off"
               autocond="CL650/pedestal/gear/nws == 0" delay="2.5"
               audio-prompt="cklist-audio/eng_shutdown_12.opus"
               audio-response="cklist-audio/eng_shutdown_12_chk.opus"
               auto-adv="capt"/>
-        <item name="13. ATC/TCAS" action="STBY/0000"
+        <item name="12. ATC/TCAS" action="STBY/0000"
               ttsname="A.T.C., tee kas" ttsaction="Standby, zero"
               autocond="CL650/fo_state/xpdr_stby == 1" delay="3"
               audio-prompt="cklist-audio/eng_shutdown_13.opus"
@@ -2133,27 +2172,702 @@
               auto-adv="capt"/>
         <!-- TODO better logic, check for both chocks and parking brakes -->
         <!-- HACK advance if parking brakes are off -->
-        <item name="14. PARK BRAKE (IF CHOCKED)" action="OFF"
+        <item name="13. PARK BRAKE (IF CHOCKED)" action="OFF"
               ttsname="Parking brake, if chocked" ttsaction="Off"
               autocond="CL650/pedestal/park_brake == 0" delay="2"
               audio-prompt="cklist-audio/eng_shutdown_14.opus"
               audio-response="cklist-audio/eng_shutdown_14_chk.opus"/>
-        <item name="15. PASSENGER SIGNS" action="OFF"
+        <item name="14. PASSENGER SIGNS" action="OFF"
               ttsname="Passenger signs" ttsaction="Off"
               autocond="CL650/fo_state/extra/pax_signs == 0" delay="2.5"
               audio-prompt="cklist-audio/eng_shutdown_15.opus"
               audio-response="cklist-audio/eng_shutdown_15_chk.opus"
               auto-adv="capt"/>
-        <item name="16. CABIN DIFF" action="0 PSI"
+        <item name="15. CABIN DIFF" action="0 PSI"
               ttsname="Cabin differential" ttsaction="Zero P.S.I"
               autocond="CL650/fo_state/cabin_diff_P &lt;= 690" delay="2.5"
               audio-prompt="cklist-audio/eng_shutdown_16.opus"
               audio-response="cklist-audio/eng_shutdown_16_chk.opus"
               auto-adv="fo"/>
-        <item name="17. ENGINE SHUTDOWN CHECKLIST" action="COMPLETE"
+        <item name="16. ENGINE SHUTDOWN CHECKLIST" action="COMPLETE"
               ttsname="Engine shutdown checklist complete"
               ttsautocomplete="true"
               audio-prompt="cklist-audio/eng_shutdown_complete.opus"
+              auto-adv="none"/>
+      </checklist>
+
+      <!-- DUPLICATES OF CHECKLISTS FOR "QUICK START" WITH ONLY ESSENTIAL ACTIONS -->
+
+      <checklist name="QUICK FLT COMPARTMENT CHECKLIST"
+                 ttsname="Quick flight compartment checklist" autoseq="3" autoseqnext="205"
+                 ttscallcomplete="false" ttscallnext="true"
+                 audio-start="cklist-audio/flt_comp.opus"
+                 audio-complete="cklist-audio/flt_comp_complete.opus">
+        <item name="                SHORTENED CHECKLIST                " color="magenta"/>
+        <item name="        FOR USE AFTER NORMAL SECURING ONLY         " color="magenta"/>
+        <item/>
+        <item name=" 1. NAV LIGHTS/LOGO LIGHT" action="ON"
+              ttsname="Nav lights, logo light" ttsaction="On"
+              audio-prompt="cklist-audio/flt_comp_08.opus"
+              audio-response="cklist-audio/flt_comp_08_chk.opus"/>
+        <!-- FIXME action -->
+        <item name=" 2. FMS DATABASE STATUS" action="CYCLED/CHECK"
+              ttsname="F.M.S. database status" ttsaction="Cycled, checked"
+              audio-prompt="cklist-audio/flt_comp_12.opus"
+              audio-response="cklist-audio/flt_comp_12_chk.opus"
+              hint-image="cklist-images/flt_comp_12.png"/>
+        <item name=" 3. FMS FLIGHT PLAN UPLINK/ATIS" action="INITIATED"
+              ttsname="F.M.S. flight plan uplink, A-tis" ttsaction="Initiated"
+              audio-prompt="cklist-audio/flt_comp_13.opus"
+              audio-response="cklist-audio/flt_comp_13_chk.opus"
+              hint-image="cklist-images/flt_comp_13.png"/>
+        <item name=" 4. HYD PANEL AND PUMPS" action="AUTO/3A ON"
+              ttsname="Hydraulic panel and pumps"
+              ttsaction="Auto, 3A on"
+              audio-prompt="cklist-audio/flt_comp_20.opus"
+              audio-response="cklist-audio/extra/flt_comp_20_chk_rapid.opus"
+              hint-image="cklist-images/flt_comp_20.png"/>
+        <item name=" 5. PARKING BRAKE" action="SET"
+              ttsname="Parking brake" ttsaction="Set"
+              audio-prompt="cklist-audio/flt_comp_18.opus"
+              audio-response="cklist-audio/flt_comp_18_chk.opus"/>
+        <item name=" 6. NOSE DOOR" action="CLOSED"
+              ttsname="Nose door" ttsaction="Closed"
+              audio-prompt="cklist-audio/flt_comp_19.opus"
+              audio-response="cklist-audio/flt_comp_19_chk.opus"/>
+        <item name=" 7. AC/DC UTILITY SWITCH" action="ON"
+              ttsname="AC DC utility switch" ttsaction="On"
+              audio-prompt="cklist-audio/flt_comp_22.opus"
+              audio-response="cklist-audio/flt_comp_22_chk.opus"/>
+        <item name=" 8. APU LCV" action="OPEN"
+              ttsname="A.P.U. L.C.V" ttsaction="Open.."
+              audio-prompt="cklist-audio/flt_comp_25.opus"
+              audio-response="cklist-audio/flt_comp_25_chk.opus"/>
+        <item name=" 9. 10TH STAGE ISOL VALVE" action="OPEN"
+              ttsname="Tenth stage isolation valve" ttsaction="Open"
+              audio-prompt="cklist-audio/flt_comp_26.opus"
+              audio-response="cklist-audio/flt_comp_26_chk.opus"/>
+        <item name="10. PACKS" action="ON"
+              ttsname="Packs" ttsaction="On"
+              audio-prompt="cklist-audio/flt_comp_27.opus"
+              audio-response="cklist-audio/flt_comp_27_chk.opus"/>
+        <item name="11. PRESSURIZATION PANEL" action="SET"
+              ttsname="Pressurization panel" ttsaction="Set"
+              audio-prompt="cklist-audio/flt_comp_29.opus"
+              audio-response="cklist-audio/extra/flt_comp_29_chk_rapid.opus"
+              hint-image="cklist-images/flt_comp_29.png"/>
+        <item name="12. EMER LIGHTS" action="ARM"
+              ttsname="Emergency lights" ttsaction="Armed"
+              audio-prompt="cklist-audio/flt_comp_34.opus"
+              audio-response="cklist-audio/extra/flt_comp_34_chk_rapid.opus"
+              hint-image="cklist-images/flt_comp_34.png"/>
+        <item name="13. PASSENGER SIGNS" action="ON/AUTO"
+              ttsname="Passenger signs" ttsaction="On, auto"
+              audio-prompt="cklist-audio/flt_comp_35.opus"
+              audio-response="cklist-audio/flt_comp_35_chk.opus"/>
+        <item name="14. THRUST REVERSERS" action="ARMED"
+              ttsname="Thrust reversers" ttsaction="Armed"
+              audio-prompt="cklist-audio/flt_comp_50.opus"
+              audio-response="cklist-audio/extra/flt_comp_50_chk_rapid.opus"/>
+        <item name="15. TRIMS ( 3 ) MACH TRIM" action="SET"
+              ttsname="Trims, mach trim" ttsaction="Set"
+              audio-prompt="cklist-audio/flt_comp_56.opus"
+              audio-response="cklist-audio/extra/flt_comp_56_chk_rapid.opus"
+              hint-image="cklist-images/flt_comp_56.png"/>
+        <item name="16. YAW DAMPERS" action="ENGAGE"
+              ttsname="Yaw dampers" ttsaction="Engaged"
+              audio-prompt="cklist-audio/flt_comp_57.opus"
+              audio-response="cklist-audio/flt_comp_57_chk.opus"
+              hint-image="cklist-images/flt_comp_57.png"/>
+        <item name="17. IRS(3)" action="ALIGNED"
+              ttsname="IRS" ttsaction="Aligned"
+              audio-prompt="cklist-audio/flt_comp_59.opus"
+              audio-response="cklist-audio/flt_comp_59_chk.opus"/>
+        <item name="18. CPDLC" action="LOGON"
+              ttsname="C.P.D.L.C" ttsaction="Logon"
+              audio-prompt="cklist-audio/flt_comp_60.opus"
+              audio-response="cklist-audio/flt_comp_60_chk.opus"/>
+        <item name="19. ATIS &amp; CLEARANCE" action="COPIED"
+              ttsname="A-tis and clearance" ttsaction="Copied"
+              audio-prompt="cklist-audio/flt_comp_62.opus"
+              audio-response="cklist-audio/flt_comp_62_chk.opus"/>
+        <item name="20. FMS FLT PLN/WIND UPDATE/PERF" action="PROGRAM"
+              ttsname="FMS flight plan, wind update, perf"
+              ttsaction="Programmed"
+              audio-prompt="cklist-audio/flt_comp_63.opus"
+              audio-response="cklist-audio/flt_comp_63_chk.opus"/>
+        <item name="21. TAKEOFF DATA" action="SET"
+              ttsname="Takeoff data" ttsaction="Set"
+              audio-prompt="cklist-audio/flt_comp_64.opus"
+              audio-response="cklist-audio/flt_comp_64_chk.opus"/>
+        <item name="22. AVIONICS/CHARTS" action="SET"
+              ttsname="Avionics, charts" ttsaction="Set"
+              audio-prompt="cklist-audio/flt_comp_65.opus"
+              audio-response="cklist-audio/flt_comp_65_chk.opus"
+              hint-image="cklist-images/flt_comp_65.png"/>
+        <item name="23. FLT INST" action="CHECKED/SET"
+              ttsname="Flight instruments" ttsaction="Checked, set"
+              audio-prompt="cklist-audio/flt_comp_66.opus"
+              audio-response="cklist-audio/flt_comp_66_chk.opus"
+              hint-image="cklist-images/flt_comp_66.png"/>
+        <item name="24. DEPARTURE BRIEFING" action="COMPLETE"
+              ttsname="Departure briefing" ttsaction="Completed"
+              audio-prompt="cklist-audio/flt_comp_67.opus"
+              audio-response="cklist-audio/flt_comp_67_chk.opus"/>
+        <item name="25. PINS/COVERS/CHOCKS" action="REMOVED"
+              ttsname="Pins, covers, chocks" ttsaction="Removed"
+              audio-prompt="cklist-audio/flt_comp_69.opus"
+              audio-response="cklist-audio/flt_comp_69_chk.opus"/>
+        <item name="26. FLT COMPARTMENT CHECKLIST" action="COMPLETE"
+              ttsname="Flight compartment checklist complete"
+              ttsautocomplete="true"
+              audio-prompt="cklist-audio/flt_comp_71.opus"
+              auto-adv="none"/>
+      </checklist>
+      <checklist name="QUICK ENGINE START CHECKLIST"
+                 ttsname="Quick engine start checklist" autoseq="205"
+                 ttscallcomplete="false" ttscallnext="true"
+                 audio-start="cklist-audio/eng_start.opus"
+                 audio-next="cklist-audio/eng_start_next.opus"
+                 audio-complete="cklist-audio/eng_start_complete.opus">
+        <item name="          FOR USE WITH APU START ONLY" color="magenta"/>
+        <item name=" FOR CROSS BLEED OR EXTERNAL AIR START REFER TO"
+              color="magenta"/>
+        <item name="           APPROPRIATE QRH CHECKLIST" color="magenta"/>
+        <item name=" 1. DOORS" action="CLOSED"
+              ttsname="Doors" ttsaction="Closed"
+              autocond="CL650/fo_state/doors_closed == 1" delay="4.5"
+              audio-prompt="cklist-audio/eng_start_01.opus"
+              audio-response="cklist-audio/eng_start_01_chk.opus"
+              hint-image="cklist-images/eng_start_01.png"
+              auto-adv="capt"/>
+        <item name=" 2. BEACON" action="ON"
+              ttsname="Beacon" ttsaction="On"
+              autocond="CL650/overhead/ext_lts/beacon == 1" delay="2"
+              audio-prompt="cklist-audio/eng_start_04.opus"
+              audio-response="cklist-audio/eng_start_04_chk.opus"
+              auto-adv="capt"/>
+        <item name=" 3. FUEL BOOST PUMPS" action="ON"
+              ttsname="Fuel boost pumps" ttsaction="On"
+              autocond="CL650/fo_state/fuel_boost_on == 1" delay="3"
+              audio-prompt="cklist-audio/eng_start_05.opus"
+              audio-response="cklist-audio/eng_start_05_chk.opus"
+              auto-adv="capt"/>
+        <item name=" 6. IGNITION" action="ARM"
+              ttsname="Ignition" ttsaction="Armed"
+              autocond="CL650/fo_state/ign_armed == 1" delay="3"
+              audio-prompt="cklist-audio/eng_start_06.opus"
+              audio-response="cklist-audio/eng_start_06_chk.opus"
+              hint-image="cklist-images/eng_start_06.png"
+              auto-adv="capt"/>
+        <item/>
+        <item name="  NOTE: ITT BELOW 120C &amp; 21% N2 MIN FOR START"
+              color="amber"/>
+        <item/>
+        <item name=" 7. ENGINE 2" action="START"
+              ttsname="Engine 2 start" ttsautocomplete="true" ttspause="true"
+              autocond="CL650/fo_state/engine/right/n2 &gt; 54" delay="3"
+              audio-prompt="cklist-audio/eng_start_07.opus"
+              hint-image="cklist-images/eng_start_07.png"
+              auto-adv="capt"/>
+        <item name=" 9. ENGINE 1" action="START"
+              ttsname="Engine 1 start" ttsautocomplete="true" ttspause="true"
+              autocond="CL650/fo_state/engine/left/n2 &gt; 54" delay="3"
+              audio-prompt="cklist-audio/eng_start_09.opus"
+              hint-image="cklist-images/eng_start_09.png"
+              auto-adv="capt"/>
+        <item name="10. ENGINE START CHECKLIST" action="COMPLETE"
+              ttsname="Engine start checklist complete"
+              ttsautocomplete="true"
+              audio-prompt="cklist-audio/eng_start_complete.opus"
+              auto-adv="none"/>
+      </checklist>
+      <checklist name="QUICK AFTER START CHECKLIST"
+                 ttsname="Quick after start checklist" autoseq="206"
+                 ttscallcomplete="false" ttscallnext="true"
+                 audio-start="cklist-audio/after_start.opus"
+                 audio-next="cklist-audio/after_start_next.opus"
+                 audio-complete="cklist-audio/after_start_complete.opus">
+        <item name=" 1. GEN 1 AND 2" action="ON"
+              ttsname="Generator 1 and 2" ttsaction="On"
+              autocond="CL650/fo_state/gen_1_2_on == 1" delay="5.5"
+              audio-prompt="cklist-audio/after_start_01.opus"
+              audio-response="cklist-audio/flt_comp_16_chk.opus"
+              hint-image="cklist-images/after_start_01.png"
+              auto-adv="capt"/>
+        <item name=" 2. IGNITION" action="DISARM"
+              ttsname="Ignition" ttsaction="Disarmed"
+              autocond="CL650/fo_state/ign_disarmed == 1" delay="4"
+              audio-prompt="cklist-audio/after_start_02.opus"
+              audio-response="cklist-audio/after_start_02_chk.opus"
+              auto-adv="capt"/>
+        <item name=" 3. PACKS" action="ON"
+              ttsname="Packs" ttsaction="On"
+              autocond="CL650/fo_state/packs_on == 1" delay="2.5"
+              audio-prompt="cklist-audio/after_start_03.opus"
+              audio-response="cklist-audio/after_start_03_chk.opus"
+              auto-adv="capt"/>
+        <item name=" 4. 14TH STAGE" action="OPEN"
+              ttsname="Fourteenth stage" ttsaction="Open"
+              autocond="CL650/fo_state/bleed_14st_on == 1" delay="3"
+              audio-prompt="cklist-audio/after_start_04.opus"
+              audio-response="cklist-audio/after_start_04_chk.opus"
+              hint-image="cklist-images/after_start_04.png"
+              auto-adv="capt"/>
+        <item name=" 5. TRIMS" action="3 SET FOR T-O"
+              ttsname="Trims" ttsaction="Three set for takeoff"
+              audio-prompt="cklist-audio/after_start_12.opus"
+              audio-response="cklist-audio/after_start_12_chk.opus"/>
+        <item name=" 6. NOSE STEER" action="ARMED"
+              ttsname="Nose steer" ttsaction="Armed"
+              autocond="CL650/pedestal/gear/nws == 1" delay="3"
+              audio-prompt="cklist-audio/after_start_13.opus"
+              audio-response="cklist-audio/after_start_13_chk.opus"
+              auto-adv="capt"/>
+        <item name=" 7. ATS" action="N1-TO"
+              ttsname="A.T.S" ttsaction="N1, takeoff"
+              autocond="CL650/fo_state/ats_n1_to == 1" delay="3"
+              audio-prompt="cklist-audio/after_start_21.opus"
+              audio-response="cklist-audio/after_start_21_chk.opus"
+              hint-image="cklist-images/after_start_21.png"
+              auto-adv="capt"/>
+        <item name=" 8. ATC/TCAS" action="TA/RA"
+              ttsname="A.T.C., tee kas" ttsaction="T-A, R-A"
+              autocond="CL650/fo_state/xpdr_tara == 1" delay="4"
+              audio-prompt="cklist-audio/after_start_22.opus"
+              audio-response="cklist-audio/after_start_22_chk.opus"
+              auto-adv="capt"/>
+        <item name=" 9. AFTER START CHECKLIST" action="COMPLETE"
+              ttsname="After start checklist complete" ttsautocomplete="true"
+              audio-prompt="cklist-audio/after_start_complete.opus"
+              auto-adv="none"/>
+      </checklist>
+      <checklist name="QUICK TAXI CHECKLIST"
+                 ttsname="Quick taxi checklist" autoseq="207" autoseqnext="208"
+                 ttscallcomplete="false" ttscallnext="true"
+                 audio-start="cklist-audio/taxi.opus"
+                 audio-next="cklist-audio/taxi_next.opus"
+                 audio-complete="cklist-audio/taxi_complete.opus">
+        <item name=" 1. TAXI LIGHTS" action="ON"
+              ttsname="Taxi lights" ttsaction="On"
+              autocond="CL650/overhead/land_lts/recog_taxi == 1" delay="3"
+              audio-prompt="cklist-audio/taxi_01.opus"
+              audio-response="cklist-audio/taxi_01_chk.opus"
+              auto-adv="capt"/>
+        <!-- HACK also accept if WING OFF, COWL ON until we have precise logic -->
+        <item name=" 2. WING &amp; COWL ANTI-ICE" action="NORM/ON OR OFF"
+              ttsname="Wing and cowl anti-ice" ttsaction="Norm, on or off"
+              autocond="CL650/fo_state/extra/all_anti_ice_ok_or_cowl_on == 1" delay="3"
+              audio-prompt="cklist-audio/taxi_02.opus"
+              audio-response="cklist-audio/taxi_02_chk.opus"
+              hint-image="cklist-images/taxi_02.png"/>
+        <item/>
+        <item name="    IF TAXIING TO DE-ICE, PAUSE CHECKLIST HERE"
+              color="magenta"/>
+        <item name="     UNTIL PAPER DE-ICE CHECKLIST IS COMPLETE"
+              color="magenta"
+              ttsname="If taxiing to de-ice, pause checklist here until paper de-ice checklist is complete"
+              ttspause="true"
+              audio-prompt="cklist-audio/taxi_deice.opus"/>
+        <item/>
+        <item name=" 3. FLAPS" action="20"
+              ttsname="Flaps" ttsaction="Twenty"
+              autocond="CL650/fo_state/flaps_ind == 20" delay="1.5"
+              audio-prompt="cklist-audio/taxi_05.opus"
+              audio-response="cklist-audio/taxi_05_chk.opus"
+              auto-adv="capt"/>
+        <item name=" 4. ALTIMETERS" action="SET/X-CHECK"
+              ttsname="Altimeters" ttsaction="Set, cross-checked"
+              autocond="CL650/fo_state/baro_3_set == 1" delay="3"
+              audio-prompt="cklist-audio/taxi_06.opus"
+              audio-response="cklist-audio/taxi_06_chk.opus"
+              auto-adv="capt"/>
+        <item name=" 5. RADAR WX" action="ON"
+              ttsname="Radar weather" ttsaction="On" delay="4"
+              audio-prompt="cklist-audio/taxi_07.opus"
+              audio-response="cklist-audio/taxi_07_chk.opus"
+              auto-adv="fo"/>
+        <item name=" 6. TAKEOFF BRIEFING" action="REVIEW"
+              ttsname="Takeoff briefing" ttsaction="Reviewed"
+              audio-prompt="cklist-audio/taxi_08.opus"
+              audio-response="cklist-audio/taxi_08_chk.opus"/>
+        <item name=" 7. TAXI CHECKLIST" action="COMPLETE"
+              ttsname="Taxi checklist complete" ttsautocomplete="true"
+              audio-prompt="cklist-audio/taxi_complete.opus"
+              auto-adv="none"/>
+      </checklist>
+      <checklist name="QUICK BEFORE TAKEOFF CHECKLIST"
+                 ttsname="Quick before takeoff checklist" autoseq="208"
+                 ttscallcomplete="false" ttscallnext="true"
+                 audio-start="cklist-audio/before_takeoff.opus"
+                 audio-next="cklist-audio/before_takeoff_next.opus"
+                 audio-complete="cklist-audio/before_takeoff_complete.opus">
+        <item name=" 1. PASSENGER SIGNS" action="ADVISE/ON"
+              ttsname="Passenger signs" ttsaction="Advised, on"
+              autocond="CL650/fo_state/extra/pax_signs == 1" delay="3.5"
+              audio-prompt="cklist-audio/before_takeoff_01.opus"
+              audio-response="cklist-audio/before_takeoff_01_chk.opus"
+              auto-adv="capt"/>
+        <item name=" 2. ANTI-COLLISION LIGHTS" action="ON"
+              ttsname="Anti-collision lights" ttsaction="On"
+              autocond="CL650/overhead/ext_lts/acoll == 1" delay="3"
+              audio-prompt="cklist-audio/before_takeoff_02.opus"
+              audio-response="cklist-audio/before_takeoff_02_chk.opus"
+              auto-adv="capt"/>
+        <item name=" 3. PROBES" action="ON"
+              ttsname="Probes" ttsaction="On"
+              autocond="CL650/fo_state/extra/probe_heat == 1" delay="2"
+              audio-prompt="cklist-audio/before_takeoff_03.opus"
+              audio-response="cklist-audio/before_takeoff_03_chk.opus"
+              auto-adv="capt"/>
+        <item name=" 4. WINDSHIELD HEAT" action="ON"
+              ttsname="Windshield heat" ttsaction="On"
+              autocond="CL650/fo_state/extra/windshield_heat == 1" delay="2.5"
+              audio-prompt="cklist-audio/before_takeoff_04.opus"
+              audio-response="cklist-audio/before_takeoff_04_chk.opus"
+              hint-image="cklist-images/before_takeoff_04.png"
+              auto-adv="capt"/>
+        <!-- HACK also accept if ON until we have precise logic -->
+        <item name=" 5. WING &amp; COWL ANTI-ICE" action="NORM/ON OR OFF"
+              ttsname="Wing and cowl anti-ice" ttsaction="Norm, on or off"
+              autocond="CL650/fo_state/extra/all_anti_ice_ok_or_on == 1" delay="3"
+              audio-prompt="cklist-audio/before_takeoff_05.opus"
+              audio-response="cklist-audio/before_takeoff_05_chk.opus"/>
+        <item name=" 6. CONT IGNITION" action="ON"
+              ttsname="Continuous ignition" ttsaction="On"
+              autocond="CL650/lamps/overhead/ignition/cont == 1" delay="3"
+              audio-prompt="cklist-audio/before_takeoff_06.opus"
+              audio-response="cklist-audio/before_takeoff_06_chk.opus"
+              auto-adv="capt"/>
+        <item name=" 7. ATC/TCAS" action="TA/RA"
+              ttsname="A.T.C., tee kas" ttsaction="T-A, R-A"
+              autocond="CL650/fo_state/xpdr_tara == 1" delay="4"
+              audio-prompt="cklist-audio/before_takeoff_07.opus"
+              audio-response="cklist-audio/before_takeoff_07_chk.opus"
+              auto-adv="capt"/>
+        <item name=" 8. CAS (T-O CONFIG OK)" action="CHECK"
+              ttsname="Kas takeoff config OK" ttsaction="Checked"
+              audio-prompt="cklist-audio/before_takeoff_09.opus"
+              audio-response="cklist-audio/before_takeoff_09_chk.opus"/>
+        <!-- TODO better logic?
+        CL650/fo_state/ldg_lts_app: 1 if L+R are PULSE or ON, does not check NOSE
+        sim/cockpit/electrical/landing_lights_on,
+        sim/cockpit2/switches/landing_lights_on: 1 if NOSE is ON, does not check L/R
+        -->
+        <item name=" 9. LANDING/PULSE/RECOG LIGHTS" action="ON"
+              ttsname="Landing, pulse, recog lights" ttsaction="On"
+              autocond="CL650/fo_state/ldg_lts_app == 1" delay="3"
+              audio-prompt="cklist-audio/before_takeoff_10.opus"
+              audio-response="cklist-audio/before_takeoff_10_chk.opus"
+              auto-adv="capt"/>
+        <item name="10. BEFORE TAKEOFF CHECKLIST" action="COMPLETE"
+              ttsname="Before takeoff checklist complete"
+              ttsautocomplete="true"
+              audio-prompt="cklist-audio/before_takeoff_complete.opus"
+              auto-adv="none"/>
+      </checklist>
+      <checklist name="QUICK AFTER TAKEOFF CHECKLIST"
+                 ttsname="Quick after takeoff checklist" autoseq="209" autoseqnext="212"
+                 ttscallcomplete="false"
+                 reset-on-goaround="true"
+                 audio-start="cklist-audio/after_takeoff.opus"
+                 audio-next="cklist-audio/after_takeoff_next.opus"
+                 audio-complete="cklist-audio/after_takeoff_complete.opus">
+        <item name=" 1. LDG GEAR" action="UP"
+              ttsname="Landing gear" ttsaction="Up"
+              autocond="CL650/fo_state/gear_up_all == 1" delay="4"
+              audio-prompt="cklist-audio/after_takeoff_01.opus"
+              audio-response="cklist-audio/after_takeoff_01_chk.opus"
+              auto-adv="capt"/>
+        <item name=" 2. FLAPS" action="0"
+              ttsname="Flaps" ttsaction="Zero"
+              autocond="CL650/fo_state/flaps_ind == 0" delay="3"
+              audio-prompt="cklist-audio/after_takeoff_02.opus"
+              audio-response="cklist-audio/after_takeoff_02_chk.opus"
+              auto-adv="capt"/>
+        <item name=" 3. THRUST REVERSERS" action="OFF"
+              ttsname="Thrust reversers" ttsaction="Off"
+              autocond="CL650/fo_state/extra/thr_rev_arm == 0" delay="4"
+              audio-prompt="cklist-audio/after_takeoff_03.opus"
+              audio-response="cklist-audio/after_takeoff_03_chk.opus"
+              hint-image="cklist-images/after_takeoff_03.png"
+              auto-adv="fo"/>
+        <item name=" 4. IGNITION" action="OFF"
+              ttsname="Ignition" ttsaction="Off"
+              autocond="CL650/lamps/overhead/ignition/cont == 0" delay="3"
+              audio-prompt="cklist-audio/after_takeoff_04.opus"
+              audio-response="cklist-audio/after_takeoff_04_chk.opus"
+              auto-adv="capt"/>
+        <item name=" 5. PACKS TRANSITION" action="COMPLETE"
+              ttsname="Packs transition" ttsaction="Completed"
+              autocond="CL650/fo_state/extra/apu_bleed == 0" delay="10"
+              audio-prompt="cklist-audio/after_takeoff_06.opus"
+              audio-response="cklist-audio/after_takeoff_06_chk.opus"
+              hint-image="cklist-images/after_takeoff_06.png"
+              auto-adv="capt"/>
+        <item name=" 6. N1" action="CLB SET"
+              ttsname="N1" ttsaction="Climb set"
+              autocond="CL650/fo_state/n1_app == 0" delay="3"
+              audio-prompt="cklist-audio/after_takeoff_07.opus"
+              audio-response="cklist-audio/after_takeoff_07_chk.opus"
+              hint-image="cklist-images/after_takeoff_07.png"
+              auto-adv="capt"/>
+        <item name=" 7. APU GEN" action="OFF"
+              ttsname="A.P.U. generator" ttsaction="Off"
+              autocond="CL650/overhead/elec/apu_gen == 0" delay="4"
+              audio-prompt="cklist-audio/after_takeoff_08.opus"
+              audio-response="cklist-audio/after_takeoff_08_chk.opus"
+              auto-adv="capt"/>
+        <item name=" 8. APU" action="SHUTDOWN"
+              ttsname="A.P.U." ttsaction="Shutdown"
+              autocond="CL650/fo_state/extra/apu_off == 1" delay="4"
+              audio-prompt="cklist-audio/after_takeoff_09.opus"
+              audio-response="cklist-audio/after_takeoff_09_chk.opus"
+              auto-adv="capt"/>
+        <item/>
+        <item name="  NOTE: CHECK RPM BELOW 50% &amp; EGT BELOW 350C" color="amber"/>
+        <item name="        THEN SELECT APU PWR/FUEL OFF" color="amber"/>
+        <item/>
+        <!-- HACK wait for APU PWR/FUEL OFF after confirming APU shutdown -->
+        <item autocond="CL650/overhead/apu/pwr_fuel == 0" delay="2"
+              action="DO" ttsname="" visible="false"/>
+        <item name=" 9. CAS" action="CLEAR"
+              ttsname="Kas" ttsaction="Clear"
+              audio-prompt="cklist-audio/after_takeoff_11.opus"
+              audio-response="cklist-audio/after_takeoff_11_chk.opus"/>
+        <item name="10. AFTER TAKEOFF CHECKLIST" action="COMPLETE"
+              ttsname="After takeoff checklist complete"
+              ttsautocomplete="true"
+              audio-prompt="cklist-audio/after_takeoff_complete.opus"
+              auto-adv="none"/>
+      </checklist>
+      <checklist name="QUICK DESCENT CHECKLIST"
+                 ttsname="Quick descent checklist" autoseq="212"
+                 ttscallcomplete="false" ttscallnext="true"
+                 reset-on-goaround="true"
+                 audio-start="cklist-audio/des.opus"
+                 audio-next="cklist-audio/des_next.opus"
+                 audio-complete="cklist-audio/des_complete.opus">
+        <item name=" 1. PRESSURIZATION" action="SET"
+              ttsname="Pressurization" ttsaction="Set"
+              audio-prompt="cklist-audio/des_03.opus"
+              audio-response="cklist-audio/des_03_chk.opus"
+              hint-image="cklist-images/des_03.png"/>
+        <item name=" 2. FMS/LDG DATA/CHARTS" action="PROGRAM/SET"
+              ttsname="FMS, landing data, charts" ttsaction="Programmed, set"
+              audio-prompt="cklist-audio/des_05.opus"
+              audio-response="cklist-audio/des_05_chk.opus"/>
+        <item name=" 3. APPROACH BRIEFING" action="REVIEW"
+              ttsname="Approach briefing" ttsaction="Reviewed"
+              audio-prompt="cklist-audio/des_06.opus"
+              audio-response="cklist-audio/des_06_chk.opus"/>
+        <item name=" 4. VNAV TRANSITION FL" action="SET"
+              ttsname="V-nav transition flight level" ttsaction="Set"
+              audio-prompt="cklist-audio/des_07.opus"
+              audio-response="cklist-audio/des_07_chk.opus"
+              hint-image="cklist-images/des_07.png"/>
+        <item name=" 5. DESCENT CHECKLIST" action="COMPLETE"
+              ttsname="Descent checklist complete"
+              ttsautocomplete="true"
+              audio-prompt="cklist-audio/des_complete.opus"
+              auto-adv="none"/>
+      </checklist>
+      <checklist name="QUICK IN RANGE CHECKLIST"
+                 ttsname="Quick in range checklist" autoseq="213"
+                 ttscallcomplete="false" ttscallnext="true"
+                 reset-on-goaround="true"
+                 audio-start="cklist-audio/in_rng.opus"
+                 audio-next="cklist-audio/in_rng_next.opus"
+                 audio-complete="cklist-audio/in_rng_complete.opus">
+        <item name=" 1. APU" action="START"
+              ttsname="A.P.U." ttsaction="Started"
+              autocond="CL650/fo_state/extra/apu_start_or_avail == 1" delay="5"
+              audio-prompt="cklist-audio/in_rng_01.opus"
+              audio-response="cklist-audio/in_rng_01_chk.opus"
+              hint-image="cklist-images/in_rng_01.png"
+              auto-adv="capt"/>
+        <item name=" 2. ALTIMETERS" action="3 SET/X-CKD"
+              ttsname="Altimeters" ttsaction="Three set, cross-checked"
+              autocond="CL650/fo_state/baro_3_set == 1" delay="3"
+              audio-prompt="cklist-audio/in_rng_02.opus"
+              audio-response="cklist-audio/in_rng_02_chk.opus"
+              hint-image="cklist-images/in_rng_02.png"
+              auto-adv="capt"/>
+        <item name=" 3. AVIONICS" action="SET"
+              ttsname="Avionics" ttsaction="Set"
+              audio-prompt="cklist-audio/in_rng_03.opus"
+              audio-response="cklist-audio/in_rng_03_chk.opus"
+              hint-image="cklist-images/in_rng_03.png"/>
+        <item name=" 4. EXTERNAL LIGHTS" action="ON"
+              ttsname="External lights" ttsaction="On"
+              autocond="CL650/fo_state/ldg_lts_app == 1" delay="2.5"
+              audio-prompt="cklist-audio/in_rng_04.opus"
+              audio-response="cklist-audio/in_rng_04_chk.opus"
+              auto-adv="capt"/>
+        <item name=" 5. N1 TGT" action="SET"
+              ttsname="N1 target" ttsaction="Set"
+              autocond="CL650/fo_state/n1_app == 1" delay="4"
+              audio-prompt="cklist-audio/in_rng_05.opus"
+              audio-response="cklist-audio/in_rng_05_chk.opus"
+              auto-adv="capt"/>
+        <item autocond="CL650/fo_state/apu_avail_bleed == 1" delay="5"
+              action="DO" ttsname="" visible="false"/>
+        <item name=" 6. APU/PACKS TRANSITION" action="AVAIL/COMPLETE"
+              ttsname="A.P.U. packs transition" ttsaction="Avail, completed"
+              autocond="CL650/fo_state/extra/apu_bleed == 1" delay="10"
+              audio-prompt="cklist-audio/in_rng_06.opus"
+              audio-response="cklist-audio/in_rng_06_chk.opus"
+              hint-image="cklist-images/in_rng_06.png"
+              auto-adv="capt"/>
+        <item name=" 7. APU GEN" action="ON"
+              ttsname="A.P.U. generator" ttsaction="On"
+              autocond="CL650/overhead/elec/apu_gen == 1" delay="4.5"
+              audio-prompt="cklist-audio/in_rng_07.opus"
+              audio-response="cklist-audio/in_rng_07_chk.opus"
+              auto-adv="capt"/>
+        <item name=" 8. CAS" action="CHECK"
+              ttsname="Kas" ttsaction="Checked"
+              audio-prompt="cklist-audio/in_rng_08.opus"
+              audio-response="cklist-audio/in_rng_08_chk.opus"/>
+        <item name=" 9. IN RANGE CHECKLIST" action="COMPLETE"
+              ttsname="In range checklist complete"
+              ttsautocomplete="true"
+              audio-prompt="cklist-audio/in_rng_complete.opus"
+              auto-adv="none"/>
+      </checklist>
+      <checklist name="QUICK LANDING CHECKLIST"
+                 ttsname="Quick before landing checklist" autoseq="214"
+                 ttscallcomplete="false" ttscallnext="true"
+                 reset-on-goaround="true"
+                 audio-start="cklist-audio/before_ldg.opus"
+                 audio-next="cklist-audio/before_ldg_next.opus"
+                 audio-complete="cklist-audio/before_ldg_complete.opus"
+                 next-on-ground-only="true">
+        <item name=" 1. LDG GEAR LEVER" action="DN/INDICATING"
+              ttsname="Landing gear lever" ttsaction="Down, indicating"
+              autocond="CL650/fo_state/gear_dn_all == 1" delay="4"
+              audio-prompt="cklist-audio/before_ldg_01.opus"
+              audio-response="cklist-audio/before_ldg_01_chk.opus"
+              auto-adv="capt"/>
+        <item name=" 2. WING/COWL ANTI-ICE" action="ON OR OFF"
+              ttsname="Wing, cowl anti-ice" ttsaction="On or off"
+              autocond="CL650/fo_state/extra/all_anti_ice_ok == 1" delay="3"
+              audio-prompt="cklist-audio/before_ldg_05.opus"
+              audio-response="cklist-audio/before_ldg_05_chk.opus"/>
+        <item name=" 3. CONT IGNITION" action="ON"
+              ttsname="Continuous ignition" ttsaction="On"
+              autocond="CL650/lamps/overhead/ignition/cont == 1" delay="3"
+              audio-prompt="cklist-audio/before_ldg_06.opus"
+              audio-response="cklist-audio/before_ldg_06_chk.opus"
+              auto-adv="capt"/>
+        <item name=" 4. THRUST REVERSERS" action="ARMED"
+              ttsname="Thrust reversers" ttsaction="Armed"
+              autocond="CL650/fo_state/extra/thr_rev_arm == 1" delay="3.5"
+              audio-prompt="cklist-audio/before_ldg_07.opus"
+              audio-response="cklist-audio/before_ldg_07_chk.opus"
+              hint-image="cklist-images/before_ldg_07.png"
+              auto-adv="capt"/>
+        <item name=" 5. SPOILERS" action="STOWED/AUTO"
+              ttsname="Spoilers" ttsaction="Stowed, auto"
+              autocond="CL650/fo_state/splrs_ldg == 1" delay="2.5"
+              audio-prompt="cklist-audio/before_ldg_08.opus"
+              audio-response="cklist-audio/before_ldg_08_chk.opus"
+              auto-adv="capt"/>
+        <item name=" 6. FLAPS" action="SET"
+              ttsname="Flaps" ttsaction="Set"
+              autocond="CL650/fo_state/flaps_ind == 45" delay="3"
+              audio-prompt="cklist-audio/before_ldg_09.opus"
+              audio-response="cklist-audio/before_ldg_09_chk.opus"
+              auto-adv="capt"/>
+        <item name=" 7. CAS" action="CHECK"
+              ttsname="Kas" ttsaction="Checked"
+              audio-prompt="cklist-audio/before_ldg_10.opus"
+              audio-response="cklist-audio/before_ldg_10_chk.opus"/>
+        <!-- TODO somehow auto-advance to AFTER LANDING CHECKLIST once landed -->
+        <item name=" 8. BEFORE LANDING CHECKLIST" action="COMPLETE"
+              ttsname="Before landing checklist complete"
+              ttsautocomplete="true"
+              audio-prompt="cklist-audio/before_ldg_complete.opus"
+              auto-adv="none"/>
+      </checklist>
+      <checklist name="QUICK AFTER LANDING CHECKLIST"
+                 ttsname="Quick after landing checklist" autoseq="215" autoseqnext="116"
+                 ttscallcomplete="false" ttscallnext="true"
+                 audio-start="cklist-audio/after_ldg.opus"
+                 audio-next="cklist-audio/after_ldg_next.opus"
+                 audio-complete="cklist-audio/after_ldg_complete.opus">
+        <item autocond="CL650/pedestal/flaps == 0" action="DO" ttsname=""
+              delay="2" visible="false"/>
+        <item name=" 1. LANDING/PULSE/RECOG LIGHTS" action="OFF"
+              ttsname="Landing, pulse, recog lights" ttsaction="Off"
+              autocond="CL650/fo_state/ldg_lts_off == 1" delay="3"
+              audio-prompt="cklist-audio/after_ldg_01.opus"
+              audio-response="cklist-audio/after_ldg_01_chk.opus"
+              auto-adv="capt"/>
+        <item name=" 2. ANTI-COLLISION LIGHTS" action="OFF"
+              ttsname="Anti-collision lights" ttsaction="Off"
+              autocond="CL650/overhead/ext_lts/acoll == 0" delay="2.5"
+              audio-prompt="cklist-audio/after_ldg_02.opus"
+              audio-response="cklist-audio/after_ldg_02_chk.opus"
+              auto-adv="capt"/>
+        <item name=" 3. CONT IGNITION" action="OFF"
+              ttsname="Continuous ignition" ttsaction="Off"
+              autocond="CL650/lamps/overhead/ignition/cont == 0" delay="3"
+              audio-prompt="cklist-audio/after_ldg_03.opus"
+              audio-response="cklist-audio/after_ldg_03_chk.opus"
+              auto-adv="capt"/>
+        <item name=" 4. WINDSHIELD HEAT" action="OFF"
+              ttsname="Windshield heat" ttsaction="Off"
+              autocond="CL650/fo_state/extra/windshield_heat == 0" delay="2.5"
+              audio-prompt="cklist-audio/after_ldg_04.opus"
+              audio-response="cklist-audio/after_ldg_04_chk.opus"
+              auto-adv="capt"/>
+        <item name=" 5. PROBES" action="OFF"
+              ttsname="Probes" ttsaction="Off"
+              autocond="CL650/fo_state/extra/probe_heat == 0" delay="2"
+              audio-prompt="cklist-audio/after_ldg_05.opus"
+              audio-response="cklist-audio/after_ldg_05_chk.opus"
+              auto-adv="capt"/>
+        <item name=" 6. WING ANTI-ICE" action="OFF"
+              ttsname="Wing anti-ice" ttsaction="Off"
+              autocond="CL650/overhead/ice/wing/mode == 0" delay="2.5"
+              audio-prompt="cklist-audio/after_ldg_06.opus"
+              audio-response="cklist-audio/after_ldg_06_chk.opus"
+              auto-adv="capt"/>
+        <!-- HACK also accept if OFF until we have precise logic -->
+        <item name=" 7. COWL ANTI-ICE" action="ON OR OFF"
+              ttsname="Cowl anti-ice" ttsaction="On or off"
+              autocond="CL650/fo_state/extra/cowl_anti_ice_ok_or_off == 1" delay="2.5"
+              audio-prompt="cklist-audio/after_ldg_07.opus"
+              audio-response="cklist-audio/after_ldg_07_chk.opus"/>
+        <item name=" 8. SPOILERS" action="STOWED"
+              ttsname="Spoilers" ttsaction="Stowed"
+              autocond="CL650/pedestal/flt_spoilers == 0" delay="2.4"
+              audio-prompt="cklist-audio/after_ldg_08.opus"
+              audio-response="cklist-audio/after_ldg_08_chk.opus"
+              auto-adv="capt"/>
+        <item name=" 9. FLAPS" action="0"
+              ttsname="Flaps" ttsaction="Zero"
+              autocond="CL650/fo_state/flaps_ind == 0" delay="2"
+              audio-prompt="cklist-audio/after_ldg_09.opus"
+              audio-response="cklist-audio/after_ldg_09_chk.opus"
+              auto-adv="capt"/>
+        <item name="10. ATC/TCAS" action="ALT ON"
+              ttsname="ATC, tee kas" ttsaction="Alt on"
+              autocond="CL650/fo_state/xpdr_alt_on == 1" delay="3.5"
+              audio-prompt="cklist-audio/after_ldg_10.opus"
+              audio-response="cklist-audio/after_ldg_10_chk.opus"
+              auto-adv="capt"/>
+        <item name="11. RADAR MODE" action="STBY"
+              ttsname="Radar mode" ttsaction="Standby"
+              delay="3"
+              audio-prompt="cklist-audio/after_ldg_11.opus"
+              audio-response="cklist-audio/after_ldg_11_chk.opus"
+              auto-adv="fo"/>
+        <item name="12. AFTER LANDING CHECKLIST" action="COMPLETE"
+              ttsname="After landing checklist complete"
+              ttsautocomplete="true"
+              audio-prompt="cklist-audio/after_ldg_complete.opus"
               auto-adv="none"/>
       </checklist>
     </group>
