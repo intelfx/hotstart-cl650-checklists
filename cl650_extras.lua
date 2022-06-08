@@ -1,3 +1,5 @@
+local nan = 0/0
+
 function define_shared_dataref2(Name, Dataref, Type)
 	define_shared_dataref(Dataref, Type)
 	dataref(Name, Dataref, "writable")
@@ -7,7 +9,7 @@ Tracker = {}
 function Tracker:new()
 	o = {
 		last = nil,
-		edge_pos = -1,
+		edge_pos = nan,
 	}
 	setmetatable(o, self)
 	self.__index = self
@@ -221,11 +223,16 @@ function cl650_datarefs_update()
 	local wai_ok = false
 	local cai_ok = false
 
+	local cai_on = cl650_cai_L ~= 0 and cl650_cai_R ~= 0
+	local cai_off = cl650_cai_L == 0 and cl650_cai_R == 0
+	local wai_on = cl650_wai ~= 0
+	local wai_off = cl650_wai == 0
+
 	local in_icing_conditions = ((cl650_tat <= 10) and not (cl650_sat <= -40))
 	if not in_icing_conditions then
 		-- icing cannot occur, require all a/ice OFF
-		wai_ok = cl650_wai == 0
-		cai_ok = cl650_cai_L == 0 and cl650_cai_R == 0
+		wai_ok = wai_off
+		cai_ok = cai_off
 	else
 		-- icing can occur in some conditions, require manual attention
 		-- FIXME: implement correct logic (require proper anti-ice configuration for given OAT and humidity)
@@ -235,18 +242,21 @@ function cl650_datarefs_update()
 	cl650_anti_ice_cowl_ok = cai_ok and 1 or 0
 	cl650_anti_ice_all_ok = (wai_ok and cai_ok) and 1 or 0
 
-	cl650_anti_ice_cowl_ok_or_off = (cai_ok or (cl650_cai_L == 0 and cl650_cai_R == 0)) and 1 or 0
-	cl650_anti_ice_all_ok_or_on = ((wai_ok or (cl650_wai == 1)) and (cai_ok or (cl650_cai_L == 1 and cl650_cai_R == 1))) and 1 or 0
-	cl650_anti_ice_all_ok_or_cowl_on = ((wai_ok or (cl650_wai == 0)) and (cai_ok or (cl650_cai_L == 1 and cl650_cai_R == 1))) and 1 or 0
-	cl650_anti_ice_off = (cl650_wai == 0 and cl650_cai_L == 0 and cl650_cai_R == 0) and 1 or 0
+	cl650_anti_ice_cowl_ok_or_off = (cai_ok or cai_off) and 1 or 0
+	cl650_anti_ice_all_ok_or_on = ((wai_ok or wai_on) and (cai_ok or cai_on)) and 1 or 0
+	cl650_anti_ice_all_ok_or_cowl_on = ((wai_ok or wai_off) and (cai_ok or cai_on)) and 1 or 0
+	cl650_anti_ice_off = (wai_off and cai_off) and 1 or 0
 
 	-- "only after 45 seconds from selecting the COWL switch/lights on, can the cowl anti-ice system be confirmed operational"
-	cai_on = cl650_cai_L == 1 and cl650_cai_R == 1
 	cl650_cai:push(cl650_sim_time, cai_on)
 	cai_reliable = cl650_cai.last and cl650_sim_time - cl650_cai.edge_pos > 45
 
 	-- "COWL A/ICE ON" CAS message is equivalent to COWL L+R lights
-	cl650_cai_check = cl650_test(cai_reliable, cl650_cai_L_lamp, cl650_cai_R_lamp)
+	cl650_cai_check = (
+		cai_reliable
+		and cl650_cai_L_lamp ~= 0
+		and cl650_cai_R_lamp ~= 0
+	) and 1 or 0
 
 	-- CL650/fo_state/extra/probe_heat == CL650/overhead/ice/probe/L && CL650/overhead/ice/probe/R
 	cl650_probe_heat = cl650_test(cl650_probe_L, cl650_probe_R)
