@@ -2266,6 +2266,7 @@
               audio-prompt="cklist-audio/flt_comp_29.opus"
               audio-response="cklist-audio/extra/flt_comp_29_chk_rapid.opus"
               hint-image="cklist-images/flt_comp_29.png"/>
+        <!-- FIXME reauthor sound -->
         <item name="12. EMER LIGHTS" action="ARM"
               ttsname="Emergency lights" ttsaction="Armed"
               audio-prompt="cklist-audio/flt_comp_34.opus"
@@ -2279,6 +2280,7 @@
               ttsname="Thrust reversers" ttsaction="Armed"
               audio-prompt="cklist-audio/flt_comp_50.opus"
               audio-response="cklist-audio/extra/flt_comp_50_chk_rapid.opus"/>
+        <!-- FIXME reauthor sound -->
         <item name="15. TRIMS ( 3 ) MACH TRIM" action="SET"
               ttsname="Trims, mach trim" ttsaction="Set"
               audio-prompt="cklist-audio/flt_comp_56.opus"
