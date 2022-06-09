@@ -679,7 +679,7 @@
         <!-- HACK also accept if WING OFF, COWL ON until we have precise logic -->
         <item name=" 2. WING &amp; COWL ANTI-ICE" action="NORM/ON OR OFF"
               ttsname="Wing and cowl anti-ice" ttsaction="Norm, on or off"
-              autocond="CL650/fo_state/extra/all_anti_ice_ok_or_cowl_on == 1" delay="3"
+              autocond="CL650/fo_state/extra/all_anti_ice_ok_taxi_out == 1" delay="3"
               audio-prompt="cklist-audio/taxi_02.opus"
               audio-response="cklist-audio/taxi_02_chk.opus"
               hint-image="cklist-images/taxi_02.png"
@@ -762,7 +762,7 @@
         <!-- HACK also accept if ON until we have precise logic -->
         <item name=" 5. WING &amp; COWL ANTI-ICE" action="NORM/ON OR OFF"
               ttsname="Wing and cowl anti-ice" ttsaction="Norm, on or off"
-              autocond="CL650/fo_state/extra/all_anti_ice_ok_or_on == 1" delay="3"
+              autocond="CL650/fo_state/extra/all_anti_ice_ok_takeoff == 1" delay="3"
               audio-prompt="cklist-audio/before_takeoff_05.opus"
               audio-response="cklist-audio/before_takeoff_05_chk.opus"
               auto-adv="capt"/>
@@ -1096,7 +1096,7 @@
               auto-adv="capt"/>
         <item name=" 5. WING/COWL ANTI-ICE" action="ON OR OFF"
               ttsname="Wing, cowl anti-ice" ttsaction="On or off"
-              autocond="CL650/fo_state/extra/all_anti_ice_ok == 1" delay="3"
+              autocond="CL650/fo_state/extra/all_anti_ice_ok_landing == 1" delay="3"
               audio-prompt="cklist-audio/before_ldg_05.opus"
               audio-response="cklist-audio/before_ldg_05_chk.opus"
               auto-adv="capt"/>
@@ -1183,7 +1183,7 @@
         <!-- HACK also accept if OFF until we have precise logic -->
         <item name=" 7. COWL ANTI-ICE" action="ON OR OFF"
               ttsname="Cowl anti-ice" ttsaction="On or off"
-              autocond="CL650/fo_state/extra/cowl_anti_ice_ok_or_off == 1" delay="2.5"
+              autocond="CL650/fo_state/extra/cowl_anti_ice_ok_taxi_in == 1" delay="2.5"
               audio-prompt="cklist-audio/after_ldg_07.opus"
               audio-response="cklist-audio/after_ldg_07_chk.opus"
               auto-adv="capt"/>
@@ -1582,7 +1582,7 @@
         <!-- HACK also accept if WING OFF, COWL ON until we have precise logic -->
         <item name=" 2. WING &amp; COWL ANTI-ICE" action="NORM/ON OR OFF"
               ttsname="Wing and cowl anti-ice" ttsaction="Norm, on or off"
-              autocond="CL650/fo_state/extra/all_anti_ice_ok_or_cowl_on == 1" delay="3"
+              autocond="CL650/fo_state/extra/all_anti_ice_ok_taxi_out == 1" delay="3"
               audio-prompt="cklist-audio/taxi_02.opus"
               audio-response="cklist-audio/taxi_02_chk.opus"
               hint-image="cklist-images/taxi_02.png"/>
@@ -1658,7 +1658,7 @@
         <!-- HACK also accept if ON until we have precise logic -->
         <item name=" 5. WING &amp; COWL ANTI-ICE" action="NORM/ON OR OFF"
               ttsname="Wing and cowl anti-ice" ttsaction="Norm, on or off"
-              autocond="CL650/fo_state/extra/all_anti_ice_ok_or_on == 1" delay="3"
+              autocond="CL650/fo_state/extra/all_anti_ice_ok_takeoff == 1" delay="3"
               audio-prompt="cklist-audio/before_takeoff_05.opus"
               audio-response="cklist-audio/before_takeoff_05_chk.opus"
               auto-adv="capt"/>
@@ -1976,7 +1976,7 @@
               auto-adv="capt"/>
         <item name=" 5. WING/COWL ANTI-ICE" action="ON OR OFF"
               ttsname="Wing, cowl anti-ice" ttsaction="On or off"
-              autocond="CL650/fo_state/extra/all_anti_ice_ok == 1" delay="3"
+              autocond="CL650/fo_state/extra/all_anti_ice_ok_landing == 1" delay="3"
               audio-prompt="cklist-audio/before_ldg_05.opus"
               audio-response="cklist-audio/before_ldg_05_chk.opus"
               auto-adv="capt"/>
@@ -2063,7 +2063,7 @@
         <!-- HACK also accept if OFF until we have precise logic -->
         <item name=" 7. COWL ANTI-ICE" action="ON OR OFF"
               ttsname="Cowl anti-ice" ttsaction="On or off"
-              autocond="CL650/fo_state/extra/cowl_anti_ice_ok_or_off == 1" delay="2.5"
+              autocond="CL650/fo_state/extra/cowl_anti_ice_ok_taxi_in == 1" delay="2.5"
               audio-prompt="cklist-audio/after_ldg_07.opus"
               audio-response="cklist-audio/after_ldg_07_chk.opus"
               auto-adv="capt"/>
@@ -2469,7 +2469,7 @@
         <!-- HACK also accept if WING OFF, COWL ON until we have precise logic -->
         <item name=" 2. WING &amp; COWL ANTI-ICE" action="NORM/ON OR OFF"
               ttsname="Wing and cowl anti-ice" ttsaction="Norm, on or off"
-              autocond="CL650/fo_state/extra/all_anti_ice_ok_or_cowl_on == 1" delay="3"
+              autocond="CL650/fo_state/extra/all_anti_ice_ok_taxi_out == 1" delay="3"
               audio-prompt="cklist-audio/taxi_02.opus"
               audio-response="cklist-audio/taxi_02_chk.opus"
               hint-image="cklist-images/taxi_02.png"
@@ -2543,7 +2543,7 @@
         <!-- HACK also accept if ON until we have precise logic -->
         <item name=" 5. WING &amp; COWL ANTI-ICE" action="NORM/ON OR OFF"
               ttsname="Wing and cowl anti-ice" ttsaction="Norm, on or off"
-              autocond="CL650/fo_state/extra/all_anti_ice_ok_or_on == 1" delay="3"
+              autocond="CL650/fo_state/extra/all_anti_ice_ok_takeoff == 1" delay="3"
               audio-prompt="cklist-audio/before_takeoff_05.opus"
               audio-response="cklist-audio/before_takeoff_05_chk.opus"
               auto-adv="capt"/>
@@ -2765,7 +2765,7 @@
               auto-adv="capt"/>
         <item name=" 2. WING/COWL ANTI-ICE" action="ON OR OFF"
               ttsname="Wing, cowl anti-ice" ttsaction="On or off"
-              autocond="CL650/fo_state/extra/all_anti_ice_ok == 1" delay="3"
+              autocond="CL650/fo_state/extra/all_anti_ice_ok_landing == 1" delay="3"
               audio-prompt="cklist-audio/before_ldg_05.opus"
               audio-response="cklist-audio/before_ldg_05_chk.opus"
               auto-adv="capt"/>
@@ -2852,7 +2852,7 @@
         <!-- HACK also accept if OFF until we have precise logic -->
         <item name=" 7. COWL ANTI-ICE" action="ON OR OFF"
               ttsname="Cowl anti-ice" ttsaction="On or off"
-              autocond="CL650/fo_state/extra/cowl_anti_ice_ok_or_off == 1" delay="2.5"
+              autocond="CL650/fo_state/extra/cowl_anti_ice_ok_taxi_in == 1" delay="2.5"
               audio-prompt="cklist-audio/after_ldg_07.opus"
               audio-response="cklist-audio/after_ldg_07_chk.opus"
               auto-adv="capt"/>
