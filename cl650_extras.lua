@@ -131,6 +131,11 @@ if cl650_use_datarefs then
 	bind_dataref_array("cl650_cloud_tops_msl", "sim/weather/cloud_tops_msl_m", "readonly", 3)
 	bind_dataref_array("cl650_cloud_coverage", "sim/weather/cloud_coverage", "readonly", 3)
 
+	dataref("cl650_ice_det_L", "abus/CL650/modules/ICE_DET/0/wires/ICE", "readonly")
+	dataref("cl650_ice_det_L_fail", "abus/CL650/modules/ICE_DET/0/wires/FAIL", "readonly")
+	dataref("cl650_ice_det_R", "abus/CL650/modules/ICE_DET/1/wires/ICE", "readonly")
+	dataref("cl650_ice_det_R_fail", "abus/CL650/modules/ICE_DET/1/wires/FAIL", "readonly")
+
 	dataref("cl650_wai", "CL650/overhead/ice/wing/mode", "readonly")
 	dataref("cl650_cai_L", "CL650/overhead/ice/cowl/L", "readonly")
 	dataref("cl650_cai_R", "CL650/overhead/ice/cowl/R", "readonly")
@@ -355,6 +360,9 @@ function cl650_datarefs_update()
 	local wai_on = cl650_wai ~= 0 and cl650_wai_L_lamp ~= 0 and cl650_wai_R_lamp ~= 0
 	local wai_off = cl650_wai == 0 and cl650_wai_L_lamp == 0 and cl650_wai_R_lamp == 0
 
+	local ice_det = cl650_ice_det_L ~= 0 or cl650_ice_det_R ~= 0
+	local ice_det_fail = cl650_ice_det_L_fail ~= 0 or cl650_ice_det_R_fail ~= 0
+
 	--
 	-- F/O check logic
 	--
@@ -398,8 +406,12 @@ function cl650_datarefs_update()
 	• when ice is indicated by the ice detection system.
 	--]]
 	local icing_cond_inflight = (
-		icing_temp_inflight
-		and (precipitation or visible_moisture or in_clouds)
+		ice_det
+		or (
+			(ice_det_fail or cl650_alt_msl < ft2m(22000))
+			and icing_temp_inflight
+			and (precipitation or visible_moisture or in_clouds)
+		)
 	)
 
 	if cl650_on_ground ~= 0 then
