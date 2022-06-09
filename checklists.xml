@@ -1793,7 +1793,7 @@
       </checklist>
       <checklist name="IMMEDIATE RETURN CHECKLIST (2ND FLIGHT)" autoseq="10" autoseqnext="114"
                  ttsname="Immediate return checklist" ttscallnext="true"
-                 reset-on-goaround="true" select-on-goaround="true"
+                 reset-on-goaround="true"
                  audio-start="cklist-audio/imm_ret.opus"
                  audio-complete="cklist-audio/imm_ret_complete.opus">
         <item name=" 1. PRESSURIZATION" action="SET"
