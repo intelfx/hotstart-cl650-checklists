@@ -8,8 +8,8 @@ end
 Tracker = {}
 function Tracker:new()
 	o = {
-		last = nil,
-		edge_pos = nan,
+		last_state = nil,
+		last_edge = nan,
 	}
 	setmetatable(o, self)
 	self.__index = self
@@ -17,12 +17,13 @@ function Tracker:new()
 end
 
 function Tracker:push(timestamp, state)
-	if self.last ~= nil then
-		if not self.last and state then
-			self.edge_pos = timestamp
+	if self.last_state ~= nil then
+		-- detect any edge, aka "(not self.last_state and state) or (self.last_state and not state)"
+		if not not self.last_state ~= not not state then
+			self.last_edge = timestamp
 		end
 	end
-	self.last = state
+	self.last_state = state
 end
 
 if PLANE_ICAO == 'CL60' then
@@ -210,7 +211,6 @@ function cl650_test_ex(on, off, ...)
 	end
 end
 
-
 function cl650_test(...)
 	return cl650_test_ex(
 		function(arg) return arg ~= 0 end,
@@ -249,7 +249,7 @@ function cl650_datarefs_update()
 
 	-- "only after 45 seconds from selecting the COWL switch/lights on, can the cowl anti-ice system be confirmed operational"
 	cl650_cai:push(cl650_sim_time, cai_on)
-	cai_reliable = cl650_cai.last and cl650_sim_time - cl650_cai.edge_pos > 45
+	cai_reliable = cl650_cai.last_state and cl650_sim_time - cl650_cai.last_edge > 45
 
 	-- "COWL A/ICE ON" CAS message is equivalent to COWL L+R lights
 	cl650_cai_check = (
