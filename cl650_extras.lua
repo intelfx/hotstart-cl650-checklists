@@ -73,6 +73,7 @@ if cl650_use_datarefs then
 	define_shared_dataref2("cl650_anti_ice_all_ok_or_cowl_on", "CL650/fo_state/extra/all_anti_ice_ok_or_cowl_on", "Int")
 	define_shared_dataref2("cl650_anti_ice_wing_ok", "CL650/fo_state/extra/wing_anti_ice_ok", "Int")
 	define_shared_dataref2("cl650_anti_ice_all_ok", "CL650/fo_state/extra/all_anti_ice_ok", "Int")
+	define_shared_dataref2("cl650_anti_ice_wing_off", "CL650/fo_state/extra/wing_anti_ice_off", "Int")
 	define_shared_dataref2("cl650_anti_ice_off", "CL650/fo_state/extra/all_anti_ice_off", "Int")
 
 	dataref("cl650_sim_time", "sim/time/total_flight_time_sec", "readonly")
@@ -80,6 +81,9 @@ if cl650_use_datarefs then
 	dataref("cl650_cai_R_lamp", "CL650/lamps/overhead/anti_ice/cowl/right", "readonly")
 	define_shared_dataref2("cl650_cai_check", "CL650/fo_state/extra/cai_check", "Int")
 	cl650_cai = Tracker:new()
+
+	dataref("cl650_wai_L_lamp", "CL650/lamps/overhead/anti_ice/lheat", "readonly")
+	dataref("cl650_wai_R_lamp", "CL650/lamps/overhead/anti_ice/rheat", "readonly")
 
 	dataref("cl650_apu_pwr_fuel", "CL650/overhead/apu/pwr_fuel", "readonly")
 	dataref("cl650_apu_start_stop", "CL650/overhead/apu/start_stop", "readonly")
@@ -223,10 +227,10 @@ function cl650_datarefs_update()
 	local wai_ok = false
 	local cai_ok = false
 
-	local cai_on = cl650_cai_L ~= 0 and cl650_cai_R ~= 0
-	local cai_off = cl650_cai_L == 0 and cl650_cai_R == 0
-	local wai_on = cl650_wai ~= 0
-	local wai_off = cl650_wai == 0
+	local cai_on = cl650_cai_L ~= 0 and cl650_cai_R ~= 0 and cl650_cai_L_lamp ~= 0 and cl650_cai_R_lamp ~= 0
+	local cai_off = cl650_cai_L == 0 and cl650_cai_R == 0 and cl650_cai_L_lamp == 0 and cl650_cai_R_lamp == 0
+	local wai_on = cl650_wai ~= 0 and cl650_wai_L_lamp ~= 0 and cl650_wai_R_lamp ~= 0
+	local wai_off = cl650_wai == 0 and cl650_wai_L_lamp == 0 and cl650_wai_R_lamp == 0
 
 	local in_icing_conditions = ((cl650_tat <= 10) and not (cl650_sat <= -40))
 	if not in_icing_conditions then
@@ -245,6 +249,7 @@ function cl650_datarefs_update()
 	cl650_anti_ice_cowl_ok_or_off = (cai_ok or cai_off) and 1 or 0
 	cl650_anti_ice_all_ok_or_on = ((wai_ok or wai_on) and (cai_ok or cai_on)) and 1 or 0
 	cl650_anti_ice_all_ok_or_cowl_on = ((wai_ok or wai_off) and (cai_ok or cai_on)) and 1 or 0
+	cl650_anti_ice_wing_off = wai_off and 1 or 0
 	cl650_anti_ice_off = (wai_off and cai_off) and 1 or 0
 
 	-- "only after 45 seconds from selecting the COWL switch/lights on, can the cowl anti-ice system be confirmed operational"
