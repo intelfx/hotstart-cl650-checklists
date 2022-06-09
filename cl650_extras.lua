@@ -355,6 +355,7 @@ function cl650_datarefs_update()
 	-- aircraft state
 	--
 
+	local cai_sw_on = cl650_cai_L ~= 0 and cl650_cai_R ~= 0
 	local cai_on = cl650_cai_L ~= 0 and cl650_cai_R ~= 0 and cl650_cai_L_lamp ~= 0 and cl650_cai_R_lamp ~= 0
 	local cai_off = cl650_cai_L == 0 and cl650_cai_R == 0 and cl650_cai_L_lamp == 0 and cl650_cai_R_lamp == 0
 	local wai_on = cl650_wai ~= 0 and cl650_wai_L_lamp ~= 0 and cl650_wai_R_lamp ~= 0
@@ -498,7 +499,7 @@ function cl650_datarefs_update()
 	cl650_anti_ice_off = (wai_off and cai_off) and 1 or 0
 
 	-- "only after 45 seconds from selecting the COWL switch/lights on, can the cowl anti-ice system be confirmed operational"
-	cl650_cai:push(cl650_sim_time, cai_on)
+	cl650_cai:push(cl650_sim_time, cai_sw_on)
 	cai_reliable = cl650_cai.last_state and cl650_sim_time - cl650_cai.last_edge > 45
 
 	-- "COWL A/ICE ON" CAS message is equivalent to COWL L+R lights
