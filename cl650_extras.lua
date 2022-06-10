@@ -1,5 +1,25 @@
 local nan = 0/0
 
+function round(arg, places)
+	if places and places > 0 then
+		local m = 10^places
+		return math.floor(arg * m + 0.5) / m
+	elseif places and places < 0 then
+		local m = 10^(-places)
+		return math.floor(arg / m + 0.5) * m
+	else
+		return math.floor(arg + 0.5)
+	end
+end
+
+function round_up_to(arg, scale)
+	return math.floor((arg + scale - 1) / scale) * scale
+end
+
+function round_down_to(arg, scale)
+	return math.floor(arg / scale) * scale
+end
+
 function m2ft(m)
 	return m * 3.2808399
 end
@@ -564,5 +584,431 @@ end
 if cl650_use_datarefs then
 	do_often("cl650_datarefs_update()")
 end
+
+
+---
+--- GUI
+---
+
+--[[
+local cl650_tab_preselected = nil
+
+function cl650_is_tab_preselected(idx)
+	if idx == cl650_gui_tab_preselect then
+		return imgui.constant.TabItemFlags.SetSelected
+	else
+		return imgui.constant.TabItemFlags.None
+	end
+end
+--]]
+
+--
+-- WARNING, SHITCODE BELOW
+-- Okay, this needs to be killed with fire at the first opportunity.
+-- But, it'll work for now, I've got an FNO to attend.
+--
+
+local MassUnits = {
+	NONE = 0,
+	LBS = 1,
+	KG = 2,
+}
+function MassUnits.valid(units)
+	if units == MassUnits.LBS or units == MassUnits.KG then
+		return true
+	end
+	return false
+end
+function MassUnits.convert(value, old, new)
+	if old == new then
+		return value
+	elseif old == MassUnits.LBS and new == MassUnits.KG then
+		return round(value * 0.45359237)
+	elseif old == MassUnits.KG and new == MassUnits.LBS then
+		return round(value * 2.2046226)
+	end
+	error("MassUnits.convert: unsupported units")
+end
+function MassUnits.text(units)
+	if units == MassUnits.LBS then
+		return "lbs"
+	elseif units == MassUnits.KG then
+		return "kg"
+	end
+end
+
+local FuelMass = {}
+function FuelMass:new()
+	o = {
+		text = "",
+		value = nil,
+		units = MassUnits.NONE,
+		parsed = false,
+	}
+	setmetatable(o, self)
+	self.__index = self
+	return o
+end
+function FuelMass:update_text(changed, text, buddy)
+	if changed then
+		self.text = text
+
+		local parsed = text:lower():gsub(" ", "")
+		local v, u = string.match(parsed, "^(%d+)(%a*)$")
+		if v ~= nil and u == "lbs" then
+			self.parsed = true
+			self.value = tonumber(v)
+			self.units = MassUnits.LBS
+		elseif v ~= nil and u == "kg" then
+			self.parsed = true
+			self.value = tonumber(v)
+			self.units = MassUnits.KG
+		elseif v ~= nil and u == "" then
+			self.parsed = true
+			self.value = tonumber(v)
+			if not MassUnits.valid(self.units) then
+				if buddy and MassUnits.valid(buddy.units) then
+					self.units = buddy.units
+				else
+					self.units = MassUnits.LBS
+				end
+			end
+		else
+			self.parsed = false
+		end
+	end
+end
+function FuelMass:update_units(units)
+	if self.parsed and MassUnits.valid(self.units) and MassUnits.valid(units) and self.units ~= units then
+		self.value = MassUnits.convert(self.value, self.units, units)
+		self.text = tostring(self.value) -- maybe append new units string if it was there?
+	end
+	self.units = units
+end
+function FuelMass:valid()
+	return self.parsed and MassUnits.valid(self.units)
+end
+function FuelMass:get(units)
+	return MassUnits.convert(self.value, self.units, units)
+end
+
+local DensityUnits = {
+	NONE = 0,
+	LBS_PER_GAL = 1,
+	KG_PER_L = 2,
+}
+function DensityUnits.valid(units)
+	if units == DensityUnits.LBS_PER_GAL or units == DensityUnits.KG_PER_L then
+		return true
+	end
+	return false
+end
+function DensityUnits.convert(value, old, new)
+	if old == new then
+		return value
+	elseif old == DensityUnits.LBS_PER_GAL and new == DensityUnits.KG_PER_L then
+		return round(value * 0.11982643, 3)
+	elseif old == DensityUnits.KG_PER_L and new == DensityUnits.LBS_PER_GAL then
+		return round(value * 8.3454045, 3)
+	end
+	error("DensityUnits.convert: unsupported units")
+end
+local FuelDensity = {}
+function FuelDensity:new()
+	o = {
+		text = "",
+		value = nil,
+		units = DensityUnits.NONE,
+		parsed = false,
+	}
+	setmetatable(o, self)
+	self.__index = self
+	return o
+end
+function FuelDensity:update_text(changed, text)
+	if changed then
+		self.text = text
+
+		local parsed = text:lower():gsub(" ", "")
+		local v, u = string.match(parsed, "^([%d.]+)([%a/]*)$")
+		print("FuelDensity:update_text: changed=true, text=" .. text .. ", parsed=" .. parsed .. ", v=" .. tostring(v) .. ", u=" .. tostring(u))
+		if v ~= nil and (u == "lb/g" or u == "lbs/g" or u == "lb/gal" or u == "lbs/gal") then
+			self.parsed = true
+			self.value = tonumber(v)
+			self.units = DensityUnits.LBS_PER_GAL
+		elseif v ~= nil and (u == "kg/l" or u == "kgs/l" or u == "kg/liter" or u == "kgs/liter") then
+			self.parsed = true
+			self.value = tonumber(v)
+			self.units = DensityUnits.KG_PER_L
+		elseif v ~= nil and u == "" then
+			self.parsed = true
+			self.value = tonumber(v)
+			if not DensityUnits.valid(self.units) then
+				if self.value <= 1 then
+					self.units = DensityUnits.KG_PER_L
+				elseif self.value >= 6 then
+					self.units = DensityUnits.LBS_PER_GAL
+				end
+			end
+		else
+			self.parsed = false
+		end
+	end
+end
+function FuelDensity:update_units(units)
+	if self.parsed and DensityUnits.valid(self.units) and DensityUnits.valid(units) and self.units ~= units then
+		self.value = DensityUnits.convert(self.value, self.units, units)
+		self.text = tostring(self.value) -- maybe append new units string if it was there?
+	end
+	self.units = units
+end
+function FuelDensity:valid()
+	return self.parsed and DensityUnits.valid(self.units)
+end
+
+local cl650_fuel_in = FuelMass:new()
+local cl650_fuel_out = FuelMass:new()
+local cl650_fuel_density = FuelDensity:new()
+
+function cl650_extras_gui_build_fuel(wnd)
+	local wip = "Fuel assistant"
+
+	local text_x, text_y = imgui.CalcTextSize(wip)
+        local x1, y1 = imgui.GetCursorScreenPos()
+        local x2, y2 = imgui.GetContentRegionMax()
+
+	local text_x1 = (x1 + x2 - text_x) / 2
+	local text_y1 = (y1 + y2 - text_y) / 2
+	local text_x2 = (x1 + x2 + text_x) / 2
+	local text_y2 = (y1 + y2 + text_y) / 2
+	imgui.SetCursorPosX((x1 + x2 - text_x) / 2)
+	imgui.TextUnformatted(wip)
+
+	local changed, text = imgui.InputTextWithHint("Sensed fuel", "<amount> kg or lbs", cl650_fuel_in.text, 20)
+	cl650_fuel_in:update_text(changed, text)
+	imgui.SameLine()
+	if imgui.RadioButton("lbs##in", cl650_fuel_in.units == MassUnits.LBS) then
+		cl650_fuel_in:update_units(MassUnits.LBS)
+	end
+	imgui.SameLine()
+	if imgui.RadioButton("kg##in", cl650_fuel_in.units == MassUnits.KG) then
+		cl650_fuel_in:update_units(MassUnits.KG)
+	end
+
+	local changed, text = imgui.InputTextWithHint("Desired fuel", "<amount> kg or lbs", cl650_fuel_out.text, 20)
+	cl650_fuel_out:update_text(changed, text)
+	imgui.SameLine()
+	if imgui.RadioButton("lbs##out", cl650_fuel_out.units == MassUnits.LBS) then
+		cl650_fuel_out:update_units(MassUnits.LBS)
+	end
+	imgui.SameLine()
+	if imgui.RadioButton("kg##out", cl650_fuel_out.units == MassUnits.KG) then
+		cl650_fuel_out:update_units(MassUnits.KG)
+	end
+
+	local changed, text = imgui.InputTextWithHint("Fuel density", "<amount> lbs/gal or kg/l", cl650_fuel_density.text, 20)
+	cl650_fuel_density:update_text(changed, text)
+	imgui.SameLine()
+	if imgui.RadioButton("lbs/gal", cl650_fuel_density.units == DensityUnits.LBS_PER_GAL) then
+		cl650_fuel_density:update_units(DensityUnits.LBS_PER_GAL)
+	end
+	imgui.SameLine()
+	if imgui.RadioButton("kg/l", cl650_fuel_density.units == DensityUnits.KG_PER_L) then
+		cl650_fuel_density:update_units(DensityUnits.KG_PER_L)
+	end
+
+	imgui.Separator()
+
+	if not (cl650_fuel_in:valid() and cl650_fuel_out:valid() and cl650_fuel_density:valid()) then
+		return
+	end
+
+	if cl650_fuel_out.value <= cl650_fuel_in.value then
+		imgui.TextUnformatted("No fuel needed")
+		return
+	end
+
+	local mass_units, volume_units_str, volume_scale
+	if cl650_fuel_density.units == DensityUnits.LBS_PER_GAL then
+		mass_units = MassUnits.LBS
+		volume_units_str = "gal"
+		volume_scale = 10
+	elseif cl650_fuel_density.units == DensityUnits.KG_PER_L then
+		mass_units = MassUnits.KG
+		volume_units_str = "liter"
+		volume_scale = 40
+	else
+		return
+	end
+
+	local request_mass = cl650_fuel_out:get(mass_units) - cl650_fuel_in:get(mass_units)
+	local request_volume = round_up_to(request_mass / cl650_fuel_density.value, volume_scale)
+
+	local fms_mass = cl650_fuel_in:get(cl650_fuel_in.units) + MassUnits.convert(request_volume * cl650_fuel_density.value, mass_units, cl650_fuel_out.units)
+	local fms_mass_units_str = MassUnits.text(cl650_fuel_out.units)
+
+	imgui.TextUnformatted("Request:   " .. tostring(request_volume) .. " " .. volume_units_str)
+	imgui.TextUnformatted("FMS total: " .. tostring(round_down_to(fms_mass, 10)) .. " " .. fms_mass_units_str)
+end
+
+--
+-- SHITCODE END
+-- Okay, maybe not. Anyway, below is just regular shitcode.
+--
+
+function cl650_extras_gui_build_stub(wnd)
+	local wip = "WORK IN PROGRESS"
+
+	local color_fg = imgui.GetColorU32(imgui.constant.Col.Text)
+	local color_bg = imgui.GetColorU32(imgui.constant.Col.WindowBg)
+	local text_x, text_y = imgui.CalcTextSize(wip)
+        local x1, y1 = imgui.GetCursorScreenPos()
+        local x2, y2 = imgui.GetContentRegionMax()
+	imgui.DrawList_AddLine(x1, y1, x2, y2, color_fg, 1.5)
+	imgui.DrawList_AddLine(x2, y1, x1, y2, color_fg, 1.5)
+
+	local text_x1 = (x1 + x2 - text_x) / 2
+	local text_y1 = (y1 + y2 - text_y) / 2
+	local text_x2 = (x1 + x2 + text_x) / 2
+	local text_y2 = (y1 + y2 + text_y) / 2
+	imgui.DrawList_AddRectFilled(text_x1-1, text_y1-1, text_x2+1, text_y2+1, color_bg)
+	imgui.DrawList_AddText(text_x1, text_y1, color_fg, wip)
+end
+
+function cl650_extras_gui_build(wnd, x, y)
+	if imgui.BeginTabBar("MainTabBar") then
+		-- Thank you, f**ing FlyWithLua bag-of-dicks!
+		-- TODO: patch OPTIONAL_BOOL_ARG in FWL's ImGui bindings to accept nils, then revisit
+		--if imgui.BeginTabItem("Fuel", nil, cl650_is_tab_preselected(1))
+		if imgui.BeginTabItem("Fuel") then
+			cl650_extras_gui_build_fuel(wnd)
+			imgui.EndTabItem()
+		end
+		if imgui.BeginTabItem("[REDACTED]") then
+			cl650_extras_gui_build_stub(wnd)
+			imgui.EndTabItem()
+		end
+		if imgui.BeginTabItem("Preferences") then
+			cl650_extras_gui_build_stub(wnd)
+			imgui.EndTabItem()
+		end
+		imgui.EndTabBar()
+		--cl650_tab_preselected = nil
+	end
+end
+
+--
+-- GUI scaffolding
+--
+
+
+local cl650_gui_state = false
+local cl650_gui_is_fuel = false
+local cl650_gui_last_fuel_phase = -1
+local cl650_gui = nil
+
+function cl650_extras_gui_create()
+	if cl650_gui_state then
+		return
+	end
+	assert(cl650_gui == nil, "CL650_extras: cl650_gui_state is false, but cl650_gui is not nil")
+
+	cl650_gui_state = true
+	cl650_gui_is_fuel = false
+
+	local function float_wnd_create2(x, y, ...)
+		local w = float_wnd_create(x, y, ...)
+		float_wnd_set_resizing_limits(w, x, y, x, y)
+		return w
+	end
+	cl650_gui = float_wnd_create2(700, 490, 1, true)
+
+	-- Center the window.
+	-- Seems easy enough? Fuck you, not scaling-aware.
+	--float_wnd_set_position(cl650_gui, (SCREEN_WIDTH - x) / 2, (SCREEN_HIGHT - y) / 2)
+	-- Nothing is ever easy.
+	local g_left, g_top, g_right, g_bottom = XPLMGetScreenBoundsGlobal()
+	local left, top, right, bottom = float_wnd_get_geometry(cl650_gui)
+	float_wnd_set_geometry(cl650_gui,
+		(g_left+g_right)/2 - (right-left)/2, (g_top+g_bottom)/2 - (bottom-top)/2,
+		(g_left+g_right)/2 + (right-left)/2, (g_top+g_bottom)/2 + (bottom-top)/2
+	)
+
+	float_wnd_set_title(cl650_gui, "CL650 extras")
+	float_wnd_set_imgui_builder(cl650_gui, "cl650_extras_gui_build")
+	float_wnd_set_onclose(cl650_gui, "cl650_extras_gui_destroy")
+end
+
+function cl650_extras_gui_destroy()
+	if not cl650_gui_state then
+		return
+	end
+	assert(cl650_gui ~= nil, "CL650_extras: cl650_gui_state is true, but cl650_gui is nil")
+
+	float_wnd_destroy(cl650_gui)
+	cl650_gui = nil
+	cl650_gui_state = false
+	cl650_gui_is_fuel = nil
+end
+
+function cl650_extras_gui_show(arg)
+	if arg and not cl650_gui_state then
+		cl650_extras_gui_create()
+	elseif not arg and cl650_gui_state then
+		cl650_extras_gui_destroy()
+	end
+end
+
+function cl650_extras_gui_toggle()
+	cl650_extras_gui_show(not cl650_gui_state)
+end
+
+function cl650_extras_gui_create_fuel()
+	if cl650_gui_state then
+		return
+	end
+	assert(cl650_gui == nil, "CL650_extras: cl650_gui_state is false, but cl650_gui is not nil")
+
+	cl650_gui_state = true
+	cl650_gui_is_fuel = true
+
+	local function float_wnd_create2(x, y, ...)
+		local w = float_wnd_create(x, y, ...)
+		float_wnd_set_resizing_limits(w, x, y, x, y)
+		return w
+	end
+	cl650_gui = float_wnd_create2(956, 140, 2, true)
+	float_wnd_set_position(cl650_gui, 50, 230)
+	float_wnd_set_title(cl650_gui, "CL650 extras: fuel assistant")
+	float_wnd_set_imgui_builder(cl650_gui, "cl650_extras_gui_build_fuel")
+	float_wnd_set_onclose(cl650_gui, "cl650_extras_gui_destroy_fuel")
+end
+
+function cl650_extras_gui_destroy_fuel()
+	if not cl650_gui_is_fuel then
+		return
+	end
+	cl650_extras_gui_destroy()
+end
+
+function cl650_extras_gui_fuel()
+	if cl650_fbo_fuel_phase == 4 and cl650_gui_last_fuel_phase ~= 4 then
+		cl650_extras_gui_create_fuel()
+	end
+	if cl650_fbo_fuel_phase ~= 4 and cl650_gui_last_fuel_phase == 4 then
+		-- this sounds very heavy-handed for something that's called every second
+		-- but cl650_extras_gui_destroy_fuel() short-circuits very early if fuel assistant is not active
+		cl650_extras_gui_destroy_fuel()
+	end
+	cl650_gui_last_fuel_phase = cl650_fbo_fuel_phase
+end
+
+add_macro("CL650: extras", "cl650_extras_gui_show(true)", "cl650_extras_gui_show(false)", "deactivate")
+create_command("FlyWithLua/CL650/toggle_gui", "Open/close CL650 extras GUI", "cl650_extras_gui_toggle()", "", "")
+-- XXX: debugging
+--cl650_extras_gui_show(true)
+
+dataref("cl650_fbo_fuel_phase", "CL650/fbo/refuel/phase", "readonly")
+do_often("cl650_extras_gui_fuel()")
 
 end -- PLANE_ICAO == 'CL60'
