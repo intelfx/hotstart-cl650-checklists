@@ -508,7 +508,7 @@ function cl650_datarefs_update()
 				-- if icing impossible, require WING A/ICE = OFF
 				icing_impossible, wai_off,
 				-- if in icing conditions, require WING A/ICE = ON
-				icing_inflight, wai_on,
+				icing_cond_inflight, wai_on,
 				-- otherwise, accept any consistent state
 				wai_off or wai_on
 			)
@@ -518,7 +518,7 @@ function cl650_datarefs_update()
 				-- if icing impossible, require COWL A/ICE = OFF
 				icing_impossible, cai_off,
 				-- if in icing conditions (or will be in icing conditions on ground), require COWL A/ICE = ON
-				icing_inflight or icing_onground_cowl, cai_on,
+				icing_cond_inflight or icing_cond_onground_cowl, cai_on,
 				-- otherwise, accept any consistent state
 				cai_off or cai_on
 			)
