@@ -128,6 +128,12 @@ if cl650_use_cabin_lts then
 end
 
 if cl650_use_datarefs then
+	define_shared_dataref2("cl650_version", "CL650/version_guess", "Int")
+	cl650_version = 105
+	if XPLMFindDataRef("CL650/atmos/Ts") and XPLMFindDataRef("abus/CL650/modules/ICE_DET/0/wires/ICE") then
+		cl650_version = 106
+	end
+
 	dataref("cl650_on_ground", "sim/flightmodel/failures/onground_all", "readonly")
 	-- default weather datarefs
 	dataref("cl650_tat", "sim/weather/temperature_le_c", "readonly")
@@ -137,12 +143,19 @@ if cl650_use_datarefs then
 	dataref("cl650_runway_friction", "sim/weather/runway_friction", "readonly")
 	-- CL650 atmospheric model datarefs
 	-- WARNING: not actually used for icing simulation!
-	dataref("cl650_atmos_sat", "CL650/atmos/Ts", "readonly")
-	dataref("cl650_atmos_tat", "CL650/atmos/Tt", "readonly")
-	dataref("cl650_atmos_dewpoint", "CL650/atmos/T_dp", "readonly")
-	dataref("cl650_atmos_humidity", "CL650/atmos/rh", "readonly")
-	-- derived from sim/weather/precipitation_on_aircraft_ratio -- no point in using it
-	--datatef("cl650_atmos_m_w_spec", "CL650/atmos/m_w_spec", "readonly")
+	if cl650_version >= 106 then
+		dataref("cl650_atmos_sat", "CL650/atmos/Ts", "readonly")
+		dataref("cl650_atmos_tat", "CL650/atmos/Tt", "readonly")
+		dataref("cl650_atmos_dewpoint", "CL650/atmos/T_dp", "readonly")
+		dataref("cl650_atmos_humidity", "CL650/atmos/rh", "readonly")
+		-- derived from sim/weather/precipitation_on_aircraft_ratio -- no point in using it
+		--datatef("cl650_atmos_m_w_spec", "CL650/atmos/m_w_spec", "readonly")
+	else
+		cl650_atmos_sat = nan
+		cl650_atmos_tat = nan
+		cl650_atmos_dewpoint = nan
+		cl650_atmos_humidity = 0
+	end
 
 	-- fml
 	dataref("cl650_lfe", "CL650/overhead/press/sel/A", "readonly")
@@ -151,10 +164,17 @@ if cl650_use_datarefs then
 	bind_dataref_array("cl650_cloud_tops_msl", "sim/weather/cloud_tops_msl_m", "readonly", 3)
 	bind_dataref_array("cl650_cloud_coverage", "sim/weather/cloud_coverage", "readonly", 3)
 
-	dataref("cl650_ice_det_L", "abus/CL650/modules/ICE_DET/0/wires/ICE", "readonly")
-	dataref("cl650_ice_det_L_fail", "abus/CL650/modules/ICE_DET/0/wires/FAIL", "readonly")
-	dataref("cl650_ice_det_R", "abus/CL650/modules/ICE_DET/1/wires/ICE", "readonly")
-	dataref("cl650_ice_det_R_fail", "abus/CL650/modules/ICE_DET/1/wires/FAIL", "readonly")
+	if cl650_version >= 106 then
+		dataref("cl650_ice_det_L", "abus/CL650/modules/ICE_DET/0/wires/ICE", "readonly")
+		dataref("cl650_ice_det_L_fail", "abus/CL650/modules/ICE_DET/0/wires/FAIL", "readonly")
+		dataref("cl650_ice_det_R", "abus/CL650/modules/ICE_DET/1/wires/ICE", "readonly")
+		dataref("cl650_ice_det_R_fail", "abus/CL650/modules/ICE_DET/1/wires/FAIL", "readonly")
+	else
+		cl650_ice_det_L = 0
+		cl650_ice_det_L_fail = 1
+		cl650_ice_det_R = 0
+		cl650_ice_det_R_fail = 1
+	end
 
 	dataref("cl650_wai", "CL650/overhead/ice/wing/mode", "readonly")
 	dataref("cl650_cai_L", "CL650/overhead/ice/cowl/L", "readonly")
