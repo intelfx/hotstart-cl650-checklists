@@ -992,7 +992,7 @@ function cl650_extras_gui_toggle()
 	cl650_extras_gui_show(not cl650_gui_state)
 end
 
-function cl650_extras_gui_create_fuel()
+function cl650_extras_gui_create_fuel(x, y, w, h)
 	if cl650_gui_state ~= GuiState.NONE then
 		return
 	end
@@ -1005,9 +1005,8 @@ function cl650_extras_gui_create_fuel()
 		float_wnd_set_resizing_limits(w, x, y, x, y)
 		return w
 	end
-	cl650_gui = float_wnd_create2(956, 140, 2, true)
-	float_wnd_set_position(cl650_gui, 50, 230)
-	float_wnd_set_title(cl650_gui, "CL650 extras: fuel assistant")
+	cl650_gui = float_wnd_create2(w, h, 2, true)
+	float_wnd_set_position(cl650_gui, x, y)
 	float_wnd_set_imgui_builder(cl650_gui, "cl650_extras_gui_build_fuel")
 	float_wnd_set_onclose(cl650_gui, "cl650_extras_gui_destroy_fuel")
 end
@@ -1026,7 +1025,7 @@ function cl650_extras_gui_fuel()
 	-- it may seem very heavyveight to "create" a fuel assistant dialog every loop while the request is on screen,
 	-- but create/destroy functions short-circuit very early if the dialog has already been created/destroyed
 	if has_fueler and cl650_sim_time - cl650_gui_fueler.last_edge >= 8 then
-		cl650_extras_gui_create_fuel()
+		cl650_extras_gui_create_fuel(50, 230, 900, 140)
 	elseif not has_fueler and cl650_sim_time - cl650_gui_fueler.last_edge >= 10 then
 		cl650_extras_gui_destroy_fuel()
 	end
