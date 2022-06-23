@@ -228,6 +228,7 @@ if cl650_use_datarefs then
 	dataref("cl650_10th_L_closed", "CL650/lamps/overhead/bleed/10st/left/closed", "readonly")
 	dataref("cl650_10th_isol", "CL650/lamps/overhead/bleed/10st/isol", "readonly")
 	dataref("cl650_10th_apu_lcv", "CL650/lamps/overhead/bleed/10st/apu_lcv/open", "readonly")
+	dataref("cl650_10th_apu_lcv_sw", "CL650/overhead/bleed/10st/apu_lcv", "readonly")
 	dataref("cl650_10th_R_closed", "CL650/lamps/overhead/bleed/10st/right/closed", "readonly")
 	define_shared_dataref2("cl650_apu_bleed", "CL650/fo_state/extra/apu_bleed", "Int")
 
@@ -565,6 +566,7 @@ function cl650_datarefs_update()
 	cl650_apu_bleed = cl650_test(
 		cl650_10th_L_closed,
 		cl650_10th_apu_lcv,
+		cl650_10th_apu_lcv_sw,
 		cl650_10th_isol,
 		cl650_10th_R_closed
 	)
