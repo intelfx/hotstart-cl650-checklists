@@ -102,6 +102,8 @@ if PLANE_ICAO == 'CL60' then
 local cl650_use_steep_app = true
 local cl650_use_cabin_lts = true
 local cl650_use_datarefs = true
+local cl650_use_gui = true
+local cl650_use_fuel_assistant = true
 --
 -- END plugin configuration
 --
@@ -235,7 +237,10 @@ if cl650_use_datarefs then
 	dataref("cl650_signs_no_smoking", "CL650/overhead/signs/no_smoking", "readonly")
 	dataref("cl650_signs_seatbelt", "CL650/overhead/signs/seatbelt", "readonly")
 	define_shared_dataref2("cl650_pax_signs", "CL650/fo_state/extra/pax_signs", "Int")
+end
 
+if cl650_use_gui then
+	dataref("cl650_fbo_fuel_phase", "CL650/fbo/refuel/phase", "readonly")
 end
 --
 -- END state
@@ -1024,12 +1029,13 @@ function cl650_extras_gui_fuel()
 	cl650_gui_last_fuel_phase = cl650_fbo_fuel_phase
 end
 
-add_macro("CL650: extras", "cl650_extras_gui_show(true)", "cl650_extras_gui_show(false)", "deactivate")
-create_command("FlyWithLua/CL650/toggle_gui", "Open/close CL650 extras GUI", "cl650_extras_gui_toggle()", "", "")
--- XXX: debugging
---cl650_extras_gui_show(true)
+if cl650_use_gui then
+	add_macro("CL650: extras", "cl650_extras_gui_show(true)", "cl650_extras_gui_show(false)", "deactivate")
+	create_command("FlyWithLua/CL650/toggle_gui", "Open/close CL650 extras GUI", "cl650_extras_gui_toggle()", "", "")
+end
 
-dataref("cl650_fbo_fuel_phase", "CL650/fbo/refuel/phase", "readonly")
-do_often("cl650_extras_gui_fuel()")
+if cl650_use_fuel_assistant then
+	do_often("cl650_extras_gui_fuel()")
+end
 
 end -- PLANE_ICAO == 'CL60'
