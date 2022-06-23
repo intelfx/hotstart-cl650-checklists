@@ -680,7 +680,7 @@ function FuelMass:update_text(changed, text, buddy)
 		self.text = text
 
 		local parsed = text:lower():gsub(" ", "")
-		local v, u = string.match(parsed, "^(%d+)(%a*)$")
+		local v, u = string.match(parsed, "^(-?%d+)(%a*)$")
 		if v ~= nil and u == "lbs" then
 			self.parsed = true
 			self.value = tonumber(v)
