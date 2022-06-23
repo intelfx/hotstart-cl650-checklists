@@ -194,7 +194,6 @@ if cl650_use_datarefs then
 
 	dataref("cl650_wai_L_lamp", "CL650/lamps/overhead/anti_ice/lheat", "readonly")
 	dataref("cl650_wai_R_lamp", "CL650/lamps/overhead/anti_ice/rheat", "readonly")
-	define_shared_dataref2("cl650_wai_check_off", "CL650/fo_state/extra/wai_check_off", "Int")
 
 	dataref("cl650_apu_pwr_fuel", "CL650/overhead/apu/pwr_fuel", "readonly")
 	dataref("cl650_apu_start_stop", "CL650/overhead/apu/start_stop", "readonly")
