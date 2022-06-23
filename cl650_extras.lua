@@ -927,20 +927,24 @@ end
 -- GUI scaffolding
 --
 
+local GuiState = {
+	NONE = 0,
+	MAIN = 1,
+	FUEL_ASSISTANT = 2,
+}
 
-local cl650_gui_state = false
-local cl650_gui_is_fuel = false
-local cl650_gui_last_fuel_phase = -1
+local cl650_gui_state = GuiState.NONE
 local cl650_gui = nil
 
+local cl650_gui_fueler = Tracker:new()
+
 function cl650_extras_gui_create()
-	if cl650_gui_state then
+	if cl650_gui_state ~= GuiState.NONE then
 		return
 	end
 	assert(cl650_gui == nil, "CL650_extras: cl650_gui_state is false, but cl650_gui is not nil")
 
-	cl650_gui_state = true
-	cl650_gui_is_fuel = false
+	cl650_gui_state = GuiState.MAIN
 
 	local function float_wnd_create2(x, y, ...)
 		local w = float_wnd_create(x, y, ...)
@@ -966,21 +970,20 @@ function cl650_extras_gui_create()
 end
 
 function cl650_extras_gui_destroy()
-	if not cl650_gui_state then
+	if cl650_gui_state == GuiState.NONE then
 		return
 	end
 	assert(cl650_gui ~= nil, "CL650_extras: cl650_gui_state is true, but cl650_gui is nil")
 
 	float_wnd_destroy(cl650_gui)
 	cl650_gui = nil
-	cl650_gui_state = false
-	cl650_gui_is_fuel = nil
+	cl650_gui_state = GuiState.NONE
 end
 
 function cl650_extras_gui_show(arg)
-	if arg and not cl650_gui_state then
+	if cl650_gui_state == GuiState.NONE and arg then
 		cl650_extras_gui_create()
-	elseif not arg and cl650_gui_state then
+	elseif cl650_gui_state == GuiState.MAIN and not arg then
 		cl650_extras_gui_destroy()
 	end
 end
@@ -990,13 +993,12 @@ function cl650_extras_gui_toggle()
 end
 
 function cl650_extras_gui_create_fuel()
-	if cl650_gui_state then
+	if cl650_gui_state ~= GuiState.NONE then
 		return
 	end
 	assert(cl650_gui == nil, "CL650_extras: cl650_gui_state is false, but cl650_gui is not nil")
 
-	cl650_gui_state = true
-	cl650_gui_is_fuel = true
+	cl650_gui_state = GuiState.FUEL_ASSISTANT
 
 	local function float_wnd_create2(x, y, ...)
 		local w = float_wnd_create(x, y, ...)
@@ -1011,22 +1013,23 @@ function cl650_extras_gui_create_fuel()
 end
 
 function cl650_extras_gui_destroy_fuel()
-	if not cl650_gui_is_fuel then
+	if cl650_gui_state ~= GuiState.FUEL_ASSISTANT then
 		return
 	end
 	cl650_extras_gui_destroy()
 end
 
 function cl650_extras_gui_fuel()
-	if cl650_fbo_fuel_phase == 4 and cl650_gui_last_fuel_phase ~= 4 then
+	local has_fueler = cl650_fbo_fuel_phase == 4 or cl650_fbo_fuel_phase == 8 or cl650_fbo_fuel_phase == 9
+	cl650_gui_fueler:push(cl650_sim_time, has_fueler)
+
+	-- it may seem very heavyveight to "create" a fuel assistant dialog every loop while the request is on screen,
+	-- but create/destroy functions short-circuit very early if the dialog has already been created/destroyed
+	if has_fueler and cl650_sim_time - cl650_gui_fueler.last_edge >= 8 then
 		cl650_extras_gui_create_fuel()
-	end
-	if cl650_fbo_fuel_phase ~= 4 and cl650_gui_last_fuel_phase == 4 then
-		-- this sounds very heavy-handed for something that's called every second
-		-- but cl650_extras_gui_destroy_fuel() short-circuits very early if fuel assistant is not active
+	elseif not has_fueler and cl650_sim_time - cl650_gui_fueler.last_edge >= 10 then
 		cl650_extras_gui_destroy_fuel()
 	end
-	cl650_gui_last_fuel_phase = cl650_fbo_fuel_phase
 end
 
 if cl650_use_gui then
