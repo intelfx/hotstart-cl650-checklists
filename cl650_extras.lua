@@ -1021,6 +1021,14 @@ end
 
 function cl650_extras_gui_fuel()
 	local has_fueler = cl650_fbo_fuel_phase == 4 or cl650_fbo_fuel_phase == 8 or cl650_fbo_fuel_phase == 9
+
+	-- HACK: prime the edge tracker, so that the fuel assistant window will spawn
+	-- if FWL is reloaded while the fueler is already asking something
+	if cl650_gui_fueler.last_state == nil then
+		cl650_gui_fueler.last_state = has_fueler
+		cl650_gui_fueler.last_edge = 0
+	end
+
 	cl650_gui_fueler:push(cl650_sim_time, has_fueler)
 
 	-- it may seem very heavyveight to "create" a fuel assistant dialog every loop while the request is on screen,
