@@ -628,6 +628,16 @@ function cl650_is_tab_preselected(idx)
 end
 --]]
 
+
+function cl650_gui_text_centered(label)
+	local text_x, text_y = imgui.CalcTextSize(label)
+        local x1, y1 = imgui.GetCursorScreenPos()
+        local x2, y2 = imgui.GetContentRegionMax()
+
+	imgui.SetCursorPosX((x1 + x2 - text_x) / 2)
+	imgui.TextUnformatted(label)
+end
+
 --
 -- WARNING, SHITCODE BELOW
 -- Okay, this needs to be killed with fire at the first opportunity.
@@ -797,51 +807,42 @@ local cl650_fuel_out = FuelMass:new()
 local cl650_fuel_density = FuelDensity:new()
 
 function cl650_extras_gui_build_fuel(wnd)
-	local wip = "Fuel assistant"
+	cl650_gui_text_centered("Fuel assistant")
 
-	local text_x, text_y = imgui.CalcTextSize(wip)
-        local x1, y1 = imgui.GetCursorScreenPos()
-        local x2, y2 = imgui.GetContentRegionMax()
+	local function build_fuel_input(id, label, obj, buddy)
+		imgui.SetNextItemWidth(200)
+		local changed, text = imgui.InputTextWithHint(label, "<amount> kg or lbs", obj.text, 20)
+		obj:update_text(changed, text, buddy)
 
-	local text_x1 = (x1 + x2 - text_x) / 2
-	local text_y1 = (y1 + y2 - text_y) / 2
-	local text_x2 = (x1 + x2 + text_x) / 2
-	local text_y2 = (y1 + y2 + text_y) / 2
-	imgui.SetCursorPosX((x1 + x2 - text_x) / 2)
-	imgui.TextUnformatted(wip)
+		imgui.SameLine()
+		if imgui.RadioButton("lbs##" .. id, obj.units == MassUnits.LBS) then
+			obj:update_units(MassUnits.LBS)
+		end
 
-	local changed, text = imgui.InputTextWithHint("Sensed fuel", "<amount> kg or lbs", cl650_fuel_in.text, 20)
-	cl650_fuel_in:update_text(changed, text)
-	imgui.SameLine()
-	if imgui.RadioButton("lbs##in", cl650_fuel_in.units == MassUnits.LBS) then
-		cl650_fuel_in:update_units(MassUnits.LBS)
+		imgui.SameLine()
+		if imgui.RadioButton("kg##" .. id, obj.units == MassUnits.KG) then
+			obj:update_units(MassUnits.KG)
+		end
 	end
-	imgui.SameLine()
-	if imgui.RadioButton("kg##in", cl650_fuel_in.units == MassUnits.KG) then
-		cl650_fuel_in:update_units(MassUnits.KG)
-	end
+	build_fuel_input("in", "Sensed fuel:", cl650_fuel_in, cl650_fuel_out)
+	build_fuel_input("out", "Desired fuel:", cl650_fuel_out, cl650_fuel_in)
 
-	local changed, text = imgui.InputTextWithHint("Desired fuel", "<amount> kg or lbs", cl650_fuel_out.text, 20)
-	cl650_fuel_out:update_text(changed, text)
-	imgui.SameLine()
-	if imgui.RadioButton("lbs##out", cl650_fuel_out.units == MassUnits.LBS) then
-		cl650_fuel_out:update_units(MassUnits.LBS)
-	end
-	imgui.SameLine()
-	if imgui.RadioButton("kg##out", cl650_fuel_out.units == MassUnits.KG) then
-		cl650_fuel_out:update_units(MassUnits.KG)
-	end
+	local function build_density_input(label, obj)
+		imgui.SetNextItemWidth(200)
+		local changed, text = imgui.InputTextWithHint(label, "<amount> lbs/gal or kg/l", obj.text, 20)
+		obj:update_text(changed, text)
 
-	local changed, text = imgui.InputTextWithHint("Fuel density", "<amount> lbs/gal or kg/l", cl650_fuel_density.text, 20)
-	cl650_fuel_density:update_text(changed, text)
-	imgui.SameLine()
-	if imgui.RadioButton("lbs/gal", cl650_fuel_density.units == DensityUnits.LBS_PER_GAL) then
-		cl650_fuel_density:update_units(DensityUnits.LBS_PER_GAL)
+		imgui.SameLine()
+		if imgui.RadioButton("lbs/gal", obj.units == DensityUnits.LBS_PER_GAL) then
+			obj:update_units(DensityUnits.LBS_PER_GAL)
+		end
+
+		imgui.SameLine()
+		if imgui.RadioButton("kg/l", obj.units == DensityUnits.KG_PER_L) then
+			obj:update_units(DensityUnits.KG_PER_L)
+		end
 	end
-	imgui.SameLine()
-	if imgui.RadioButton("kg/l", cl650_fuel_density.units == DensityUnits.KG_PER_L) then
-		cl650_fuel_density:update_units(DensityUnits.KG_PER_L)
-	end
+	build_density_input("Density:", cl650_fuel_density)
 
 	imgui.Separator()
 
@@ -954,8 +955,8 @@ function cl650_extras_gui_create()
 	cl650_gui = float_wnd_create2(700, 490, 1, true)
 
 	-- Center the window.
-	-- Seems easy enough? Fuck you, not scaling-aware.
 	--float_wnd_set_position(cl650_gui, (SCREEN_WIDTH - x) / 2, (SCREEN_HIGHT - y) / 2)
+	-- Seems easy enough? Fuck you, not scaling-aware.
 	-- Nothing is ever easy.
 	local g_left, g_top, g_right, g_bottom = XPLMGetScreenBoundsGlobal()
 	local left, top, right, bottom = float_wnd_get_geometry(cl650_gui)
