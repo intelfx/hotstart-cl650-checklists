@@ -809,41 +809,56 @@ local cl650_fuel_density = FuelDensity:new()
 function cl650_extras_gui_build_fuel(wnd)
 	cl650_gui_text_centered("Fuel assistant")
 
-	local function build_fuel_input(id, label, obj, buddy)
-		imgui.SetNextItemWidth(200)
-		local changed, text = imgui.InputTextWithHint(label, "<amount> kg or lbs", obj.text, 20)
-		obj:update_text(changed, text, buddy)
+	imgui.Columns(3, "columns1", false)
+	imgui.SetColumnWidth(0, 100)
+	imgui.SetColumnWidth(1, 200)
 
-		imgui.SameLine()
+	local function build_fuel_input(id, label, obj, buddy)
+		imgui.TextUnformatted(label)
+		imgui.NextColumn()
+
+		-- hack, otherwise InputText doesn't want to take the whole column,
+		-- creating unnecessary padding to the right
+		imgui.SetNextItemWidth(imgui.GetColumnWidth())
+		local changed, text = imgui.InputTextWithHint("##" .. id, "<amount> kg or lbs", obj.text, 20)
+		obj:update_text(changed, text, buddy)
+		imgui.NextColumn()
+
 		if imgui.RadioButton("lbs##" .. id, obj.units == MassUnits.LBS) then
 			obj:update_units(MassUnits.LBS)
 		end
-
 		imgui.SameLine()
 		if imgui.RadioButton("kg##" .. id, obj.units == MassUnits.KG) then
 			obj:update_units(MassUnits.KG)
 		end
+		imgui.NextColumn()
 	end
 	build_fuel_input("in", "Sensed fuel:", cl650_fuel_in, cl650_fuel_out)
 	build_fuel_input("out", "Desired fuel:", cl650_fuel_out, cl650_fuel_in)
 
-	local function build_density_input(label, obj)
-		imgui.SetNextItemWidth(200)
-		local changed, text = imgui.InputTextWithHint(label, "<amount> lbs/gal or kg/l", obj.text, 20)
-		obj:update_text(changed, text)
+	local function build_density_input(id, label, obj)
+		imgui.TextUnformatted(label)
+		imgui.NextColumn()
 
-		imgui.SameLine()
+		-- hack, otherwise InputText doesn't want to take the whole column,
+		-- creating unnecessary padding to the right
+		imgui.SetNextItemWidth(imgui.GetColumnWidth())
+		local changed, text = imgui.InputTextWithHint("##" .. id, "<amount> lbs/gal or kg/l", obj.text, 20)
+		obj:update_text(changed, text)
+		imgui.NextColumn()
+
 		if imgui.RadioButton("lbs/gal", obj.units == DensityUnits.LBS_PER_GAL) then
 			obj:update_units(DensityUnits.LBS_PER_GAL)
 		end
-
 		imgui.SameLine()
-		if imgui.RadioButton("kg/l", obj.units == DensityUnits.KG_PER_L) then
+		if imgui.RadioButton("kg/liter", obj.units == DensityUnits.KG_PER_L) then
 			obj:update_units(DensityUnits.KG_PER_L)
 		end
+		imgui.NextColumn()
 	end
-	build_density_input("Density:", cl650_fuel_density)
+	build_density_input("density", "Density:", cl650_fuel_density)
 
+	imgui.Columns()
 	imgui.Separator()
 
 	if not (cl650_fuel_in:valid() and cl650_fuel_out:valid() and cl650_fuel_density:valid()) then
