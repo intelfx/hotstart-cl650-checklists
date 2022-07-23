@@ -644,6 +644,17 @@ function cl650_gui_text_centered(label)
 	imgui.TextUnformatted(label)
 end
 
+function cl650_gui_vertical_center(idx, heights)
+	local max = 0
+	for i, v in ipairs(heights) do
+		if v > max then max = v end
+	end
+	local cur = heights[idx]
+	if cur < max then
+		imgui.SetCursorPosY(imgui.GetCursorPosY() + (max - cur) / 2)
+	end
+end
+
 ---
 --- GUI state
 ---
@@ -833,11 +844,15 @@ local cl650_fuel_out = FuelMass:new()
 local cl650_fuel_density = FuelDensity:new()
 
 function cl650_extras_gui_build_fuel(wnd)
+	-- header
+	--
 	if cl650_gui_state == GuiState.FUEL_ASSISTANT then
 		cl650_gui_text_centered("Fuel assistant")
 		imgui.Separator()
 	end
 
+	-- input area
+	--
 	imgui.Columns(3, "columns1", false)
 	imgui.SetColumnWidth(0, 100)
 	imgui.SetColumnWidth(1, 200)
@@ -892,12 +907,21 @@ function cl650_extras_gui_build_fuel(wnd)
 	imgui.Columns()
 	imgui.Separator()
 
+	-- output area
+	--
+	local columns_heights = {
+		imgui.GetTextLineHeight(),
+		imgui.GetTextLineHeightWithSpacing() * 2,
+	}
+	imgui.Columns(2, "columns2", false)
+
 	local function compute()
 		if not (cl650_fuel_in:valid() and cl650_fuel_out:valid() and cl650_fuel_density:valid()) then
 			return
 		end
 
 		if cl650_fuel_out.value <= cl650_fuel_in.value then
+			cl650_gui_vertical_center(1, columns_heights)
 			imgui.TextUnformatted("No fuel needed")
 			return
 		end
@@ -922,10 +946,13 @@ function cl650_extras_gui_build_fuel(wnd)
 		local fms_mass_units_str = MassUnits.text(fms_mass_units)
 		local fms_mass = cl650_fuel_in:get(fms_mass_units) + MassUnits.convert(req_vol * cl650_fuel_density.value, req_mass_units, fms_mass_units)
 
+		cl650_gui_vertical_center(2, columns_heights)
 		imgui.TextUnformatted("Request:   " .. tostring(req_vol) .. " " .. req_vol_units_str)
 		imgui.TextUnformatted("FMS total: " .. tostring(round_down_to(fms_mass, 10)) .. " " .. fms_mass_units_str)
 	end
 	compute()
+
+	imgui.Columns()
 end
 
 --
