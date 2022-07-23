@@ -1,3 +1,5 @@
+if PLANE_ICAO == 'CL60' then
+
 local nan = 0/0
 
 function round(arg, places)
@@ -92,8 +94,6 @@ function Tracker:push(timestamp, state)
 	end
 	self.last_state = state
 end
-
-if PLANE_ICAO == 'CL60' then
 
 --
 -- BEGIN plugin configuration
