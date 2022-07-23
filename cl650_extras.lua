@@ -709,6 +709,9 @@ function FuelMass:update_text(changed, text, buddy)
 					self.units = MassUnits.LBS
 				end
 			end
+		elseif v == nil and u == nil then
+			self.parsed = false
+			self.units = nil
 		else
 			self.parsed = false
 		end
@@ -786,6 +789,9 @@ function FuelDensity:update_text(changed, text)
 					self.units = DensityUnits.LBS_PER_GAL
 				end
 			end
+		elseif v == nil and u == nil then
+			self.parsed = false
+			self.units = nil
 		else
 			self.parsed = false
 		end
