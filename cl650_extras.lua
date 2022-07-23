@@ -783,9 +783,9 @@ function FuelDensity:update_text(changed, text)
 			self.parsed = true
 			self.value = tonumber(v)
 			if not DensityUnits.valid(self.units) then
-				if self.value <= 1 then
+				if self.value > 0 and self.value <= 1 then
 					self.units = DensityUnits.KG_PER_L
-				elseif self.value >= 6 then
+				elseif self.value >= 6 and self.value <= 8 then
 					self.units = DensityUnits.LBS_PER_GAL
 				end
 			end
