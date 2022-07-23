@@ -668,7 +668,9 @@ function cl650_gui_align_right(callable)
 	-- set empty clipping rectangle (disable drawing)
 	imgui.PushClipRect(0, 0, 0, 0, false)
 	-- fake draw to get total widget group size
+	imgui.PushID("cl650_gui_align_right")
 	callable()
+	imgui.PopID()
 	-- determine if we actually drew something
 	local cur_x2, cur_y2 = imgui.GetCursorPos()
 	if cur_x1 == cur_x2 and cur_y1 == cur_y2 then
