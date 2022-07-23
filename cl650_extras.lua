@@ -843,6 +843,7 @@ function cl650_extras_gui_build_fuel(wnd)
 	imgui.SetColumnWidth(1, 200)
 
 	local function build_fuel_input(id, label, obj, buddy)
+		imgui.AlignTextToFramePadding()
 		imgui.TextUnformatted(label)
 		imgui.NextColumn()
 
@@ -866,6 +867,7 @@ function cl650_extras_gui_build_fuel(wnd)
 	build_fuel_input("out", "Desired fuel:", cl650_fuel_out, cl650_fuel_in)
 
 	local function build_density_input(id, label, obj)
+		imgui.AlignTextToFramePadding()
 		imgui.TextUnformatted(label)
 		imgui.NextColumn()
 
