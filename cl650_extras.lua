@@ -644,6 +644,20 @@ function cl650_gui_text_centered(label)
 	imgui.TextUnformatted(label)
 end
 
+---
+--- GUI state
+---
+
+local GuiState = {
+	NONE = 0,
+	MAIN = 1,
+	FUEL_ASSISTANT = 2,
+}
+
+local cl650_gui_state = GuiState.NONE
+local cl650_gui = nil
+local cl650_gui_fueler = Tracker:new()
+
 --
 -- WARNING, SHITCODE BELOW
 -- Okay, this needs to be killed with fire at the first opportunity.
@@ -954,17 +968,6 @@ end
 --
 -- GUI scaffolding
 --
-
-local GuiState = {
-	NONE = 0,
-	MAIN = 1,
-	FUEL_ASSISTANT = 2,
-}
-
-local cl650_gui_state = GuiState.NONE
-local cl650_gui = nil
-
-local cl650_gui_fueler = Tracker:new()
 
 function cl650_extras_gui_create()
 	if cl650_gui_state ~= GuiState.NONE then
