@@ -833,7 +833,10 @@ local cl650_fuel_out = FuelMass:new()
 local cl650_fuel_density = FuelDensity:new()
 
 function cl650_extras_gui_build_fuel(wnd)
-	cl650_gui_text_centered("Fuel assistant")
+	if cl650_gui_state == GuiState.FUEL_ASSISTANT then
+		cl650_gui_text_centered("Fuel assistant")
+		imgui.Separator()
+	end
 
 	imgui.Columns(3, "columns1", false)
 	imgui.SetColumnWidth(0, 100)
