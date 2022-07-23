@@ -805,7 +805,7 @@ function FuelDensity:update_units(units)
 	self.units = units
 end
 function FuelDensity:valid()
-	return self.parsed and DensityUnits.valid(self.units)
+	return self.parsed and DensityUnits.valid(self.units) and self.value > 0
 end
 
 local cl650_fuel_in = FuelMass:new()
