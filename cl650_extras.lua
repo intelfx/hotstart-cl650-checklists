@@ -655,6 +655,39 @@ function cl650_gui_vertical_center(idx, heights)
 	end
 end
 
+-- thank you, BAG-OF-DICKS who wrote imgui, and (another) BAG-OF-DICKS who wrote the bindings!
+-- short of retrieving the style structure (which is not possible via the bindings), there is
+-- no way to estimate horizontal item size, so the below FUCKING ABOMINATION will attempt
+-- to determine total width of a widget group by repeatedly drawing it. real efficient.
+function cl650_gui_align_right(callable)
+	-- full content region, disregarding extra columns/tables etc. padding
+	local max_x, max_y = imgui.GetWindowContentRegionMax()
+
+	-- preserve cursor
+	local cur_x1, cur_y1 = imgui.GetCursorPos()
+	-- set empty clipping rectangle (disable drawing)
+	imgui.PushClipRect(0, 0, 0, 0, false)
+	-- fake draw to get total widget group size
+	callable()
+	-- determine if we actually drew something
+	local cur_x2, cur_y2 = imgui.GetCursorPos()
+	if cur_x1 == cur_x2 and cur_y1 == cur_y2 then
+		-- unset clipping rectangle
+		imgui.PopClipRect()
+		return
+	end
+	-- HACK to get rid of the final item spacing (yep, there is no way to explicitly get it... see above)
+	imgui.SameLine(0, 0)
+	-- compute required alignment
+	local cur_x2, cur_y2 = imgui.GetCursorPos()
+	imgui.SetCursorPos(max_x - (cur_x2 - cur_x1), cur_y1)
+	-- unset clipping rectangle
+	imgui.PopClipRect()
+
+	-- actual draw
+	callable()
+end
+
 ---
 --- GUI state
 ---
@@ -912,6 +945,7 @@ function cl650_extras_gui_build_fuel(wnd)
 	local columns_heights = {
 		imgui.GetTextLineHeight(),
 		imgui.GetTextLineHeightWithSpacing() * 2,
+		imgui.GetFrameHeight(),
 	}
 	imgui.Columns(2, "columns2", false)
 
@@ -951,6 +985,19 @@ function cl650_extras_gui_build_fuel(wnd)
 		imgui.TextUnformatted("FMS total: " .. tostring(round_down_to(fms_mass, 10)) .. " " .. fms_mass_units_str)
 	end
 	compute()
+
+	imgui.NextColumn()
+	cl650_gui_vertical_center(3, columns_heights)
+
+	local function buttons()
+		if cl650_gui_state ~= GuiState.FUEL_ASSISTANT then
+			return
+		end
+		imgui.Button("Keep")
+		imgui.SameLine()
+		imgui.Button("Dismiss", imgui.CalcTextSize("Dismiss (__)"), 0)
+	end
+	cl650_gui_align_right(buttons)
 
 	imgui.Columns()
 end
