@@ -892,36 +892,40 @@ function cl650_extras_gui_build_fuel(wnd)
 	imgui.Columns()
 	imgui.Separator()
 
-	if not (cl650_fuel_in:valid() and cl650_fuel_out:valid() and cl650_fuel_density:valid()) then
-		return
+	local function compute()
+		if not (cl650_fuel_in:valid() and cl650_fuel_out:valid() and cl650_fuel_density:valid()) then
+			return
+		end
+
+		if cl650_fuel_out.value <= cl650_fuel_in.value then
+			imgui.TextUnformatted("No fuel needed")
+			return
+		end
+
+		local req_mass_units, req_vol_units_str, req_vol_scale
+		if cl650_fuel_density.units == DensityUnits.LBS_PER_GAL then
+			req_mass_units = MassUnits.LBS
+			req_vol_units_str = "gal"
+			req_vol_scale = 10
+		elseif cl650_fuel_density.units == DensityUnits.KG_PER_L then
+			req_mass_units = MassUnits.KG
+			req_vol_units_str = "liter"
+			req_vol_scale = 40
+		else
+			return
+		end
+
+		local req_mass = cl650_fuel_out:get(req_mass_units) - cl650_fuel_in:get(req_mass_units)
+		local req_vol = round_up_to(req_mass / cl650_fuel_density.value, req_vol_scale)
+
+		local fms_mass_units = cl650_fuel_out.units
+		local fms_mass_units_str = MassUnits.text(fms_mass_units)
+		local fms_mass = cl650_fuel_in:get(fms_mass_units) + MassUnits.convert(req_vol * cl650_fuel_density.value, req_mass_units, fms_mass_units)
+
+		imgui.TextUnformatted("Request:   " .. tostring(req_vol) .. " " .. req_vol_units_str)
+		imgui.TextUnformatted("FMS total: " .. tostring(round_down_to(fms_mass, 10)) .. " " .. fms_mass_units_str)
 	end
-
-	if cl650_fuel_out.value <= cl650_fuel_in.value then
-		imgui.TextUnformatted("No fuel needed")
-		return
-	end
-
-	local mass_units, volume_units_str, volume_scale
-	if cl650_fuel_density.units == DensityUnits.LBS_PER_GAL then
-		mass_units = MassUnits.LBS
-		volume_units_str = "gal"
-		volume_scale = 10
-	elseif cl650_fuel_density.units == DensityUnits.KG_PER_L then
-		mass_units = MassUnits.KG
-		volume_units_str = "liter"
-		volume_scale = 40
-	else
-		return
-	end
-
-	local request_mass = cl650_fuel_out:get(mass_units) - cl650_fuel_in:get(mass_units)
-	local request_volume = round_up_to(request_mass / cl650_fuel_density.value, volume_scale)
-
-	local fms_mass = cl650_fuel_in:get(cl650_fuel_in.units) + MassUnits.convert(request_volume * cl650_fuel_density.value, mass_units, cl650_fuel_out.units)
-	local fms_mass_units_str = MassUnits.text(cl650_fuel_out.units)
-
-	imgui.TextUnformatted("Request:   " .. tostring(request_volume) .. " " .. volume_units_str)
-	imgui.TextUnformatted("FMS total: " .. tostring(round_down_to(fms_mass, 10)) .. " " .. fms_mass_units_str)
+	compute()
 end
 
 --
