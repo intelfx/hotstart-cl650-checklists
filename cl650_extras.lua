@@ -100,6 +100,14 @@ function Tracker:time_since_edge()
 	return cl650_sim_time - self.last_edge
 end
 
+function Tracker:level(arg)
+	return not not arg == not not self.last_state
+end
+
+function Tracker:edge(arg)
+	return (arg == nil or self:level(arg)) and cl650_sim_time == self.last_edge
+end
+
 --
 -- BEGIN plugin configuration
 -- TODO: expose as settings and/or autodetect based on CL650 version (for workarounds)
@@ -551,7 +559,7 @@ function cl650_datarefs_update()
 
 	-- "only after 45 seconds from selecting the COWL switch/lights on, can the cowl anti-ice system be confirmed operational"
 	cl650_cai:push(cl650_sim_time, cai_sw_on)
-	cai_reliable = cl650_cai.last_state and cl650_cai:time_since_edge() > 45
+	cai_reliable = cl650_cai:level(true) and cl650_cai:time_since_edge() > 45
 
 	-- "COWL A/ICE ON" CAS message is equivalent to COWL L+R lights
 	cl650_cai_check = (
