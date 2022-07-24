@@ -1170,7 +1170,10 @@ function cl650_extras_gui_fuel()
 
 	-- it may seem very heavyveight to "create" a fuel assistant dialog every loop while the request is on screen,
 	-- but create/destroy functions short-circuit very early if the dialog has already been created/destroyed
-	if has_fueler and cl650_gui_fueler:time_since_edge() >= 8 then
+	if cl650_fbo_fuel_phase == 4 and cl650_gui_fueler:time_since_edge() >= 8
+	or cl650_fbo_fuel_phase == 8 and cl650_gui_fueler:time_since_edge() >= 6
+	or cl650_fbo_fuel_phase == 9 and cl650_gui_fueler:time_since_edge() >= 6
+	then
 		cl650_extras_gui_create_fuel(50, 230, 900, 140)
 	elseif cl650_gui_fueler:edge(false) then
 		cl650_gui_dismiss_at = cl650_sim_time + 10
