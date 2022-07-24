@@ -95,6 +95,11 @@ function Tracker:push(timestamp, state)
 	self.last_state = state
 end
 
+function Tracker:time_since_edge()
+	-- cl650_sim_time defined below
+	return cl650_sim_time - self.last_edge
+end
+
 --
 -- BEGIN plugin configuration
 -- TODO: expose as settings and/or autodetect based on CL650 version (for workarounds)
@@ -111,6 +116,8 @@ local cl650_use_fuel_assistant = true
 --
 -- BEGIN state
 --
+dataref("cl650_sim_time", "sim/time/total_flight_time_sec", "readonly")
+
 if cl650_use_steep_app then
 	local cl650_steep_app_state = 0
 	dataref("cl650_steep_app_value", "CL650/pedestal/taws/steep_app_value", "writable")
@@ -188,7 +195,6 @@ if cl650_use_datarefs then
 	define_shared_dataref2("cl650_anti_ice_wing_off", "CL650/fo_state/extra/wing_anti_ice_off", "Int")
 	define_shared_dataref2("cl650_anti_ice_off", "CL650/fo_state/extra/all_anti_ice_off", "Int")
 
-	dataref("cl650_sim_time", "sim/time/total_flight_time_sec", "readonly")
 	dataref("cl650_cai_L_lamp", "CL650/lamps/overhead/anti_ice/cowl/left", "readonly")
 	dataref("cl650_cai_R_lamp", "CL650/lamps/overhead/anti_ice/cowl/right", "readonly")
 	define_shared_dataref2("cl650_cai_check", "CL650/fo_state/extra/cai_check", "Int")
@@ -545,7 +551,7 @@ function cl650_datarefs_update()
 
 	-- "only after 45 seconds from selecting the COWL switch/lights on, can the cowl anti-ice system be confirmed operational"
 	cl650_cai:push(cl650_sim_time, cai_sw_on)
-	cai_reliable = cl650_cai.last_state and cl650_sim_time - cl650_cai.last_edge > 45
+	cai_reliable = cl650_cai.last_state and cl650_cai:time_since_edge() > 45
 
 	-- "COWL A/ICE ON" CAS message is equivalent to COWL L+R lights
 	cl650_cai_check = (
@@ -1054,9 +1060,9 @@ function cl650_extras_gui_fuel()
 
 	-- it may seem very heavyveight to "create" a fuel assistant dialog every loop while the request is on screen,
 	-- but create/destroy functions short-circuit very early if the dialog has already been created/destroyed
-	if has_fueler and cl650_sim_time - cl650_gui_fueler.last_edge >= 8 then
+	if has_fueler and cl650_gui_fueler:time_since_edge() >= 8 then
 		cl650_extras_gui_create_fuel(50, 230, 900, 140)
-	elseif not has_fueler and cl650_sim_time - cl650_gui_fueler.last_edge >= 10 then
+	elseif not has_fueler and cl650_gui_fueler:time_since_edge() >= 10 then
 		cl650_extras_gui_destroy_fuel()
 	end
 end
