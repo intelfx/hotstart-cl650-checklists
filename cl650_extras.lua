@@ -711,6 +711,7 @@ local GuiState = {
 local cl650_gui_state = GuiState.NONE
 local cl650_gui = nil
 local cl650_gui_fueler = Tracker:new()
+local cl650_gui_dismiss_at = -1
 
 --
 -- WARNING, SHITCODE BELOW
@@ -1003,9 +1004,21 @@ function cl650_extras_gui_build_fuel(wnd)
 		if cl650_gui_state ~= GuiState.FUEL_ASSISTANT then
 			return
 		end
-		imgui.Button("Keep")
-		imgui.SameLine()
-		imgui.Button("Dismiss", imgui.CalcTextSize("Dismiss (__)"), 0)
+
+		--imgui.BeginDisabled(cl650_gui_dismiss >= 0)
+		local dismiss_text = "Dismiss"
+		if cl650_gui_dismiss_at >= 0 then
+			dismiss_text = string.format("Dismiss (%d)", math.ceil(cl650_gui_dismiss_at - cl650_sim_time))
+
+			if imgui.Button("Keep") then
+				cl650_gui_dismiss_at = -1
+			end
+			imgui.SameLine()
+		end
+		--imgui.EndDisabled()
+		if imgui.Button(dismiss_text, imgui.CalcTextSize("Dismiss (__)") + 10, 0) then
+			cl650_extras_gui_destroy()
+		end
 	end
 	cl650_gui_align_right(buttons)
 
@@ -1102,6 +1115,7 @@ function cl650_extras_gui_destroy()
 	float_wnd_destroy(cl650_gui)
 	cl650_gui = nil
 	cl650_gui_state = GuiState.NONE
+	cl650_gui_dismiss_at = -1
 end
 
 function cl650_extras_gui_show(arg)
@@ -1158,7 +1172,9 @@ function cl650_extras_gui_fuel()
 	-- but create/destroy functions short-circuit very early if the dialog has already been created/destroyed
 	if has_fueler and cl650_gui_fueler:time_since_edge() >= 8 then
 		cl650_extras_gui_create_fuel(50, 230, 900, 140)
-	elseif not has_fueler and cl650_gui_fueler:time_since_edge() >= 10 then
+	elseif cl650_gui_fueler:edge(false) then
+		cl650_gui_dismiss_at = cl650_sim_time + 10
+	elseif cl650_gui_dismiss_at > 0 and cl650_gui_dismiss_at <= cl650_sim_time then
 		cl650_extras_gui_destroy_fuel()
 	end
 end
